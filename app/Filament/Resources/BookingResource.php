@@ -24,7 +24,8 @@ class BookingResource extends Resource
     
     protected static ?int $navigationSort = 2;
 
-    protected static ?string $recordTitleAttribute = 'id';
+    // Display booking number (ID + 1000 offset) in admin UI
+    protected static ?string $recordTitleAttribute = 'booking_number';
 
     // Executive Manager, Consultant, and Super Admin can access
     public static function canAccess(): bool
@@ -129,8 +130,8 @@ class BookingResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('id')
-                    ->label('ID')
+                Tables\Columns\TextColumn::make('booking_number')
+                    ->label('Booking #')
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('details.name')
