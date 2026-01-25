@@ -338,7 +338,7 @@ class ReservationResource extends Resource
                         ]);
                         
                         Notification::make()
-                            ->title('Reservation converted to booking #' . $booking->id)
+                            ->title('Reservation converted to booking #' . $booking->booking_number)
                             ->success()
                             ->send();
                     })
