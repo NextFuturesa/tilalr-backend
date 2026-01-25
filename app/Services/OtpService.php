@@ -80,14 +80,27 @@ class OtpService
         // Store OTP in database (with cache fallback)
         $this->storeOtp($phone, $hashed, $type, $expiresAt);
 
-        // Send SMS based on mode
-        $this->sendSms($phone, $plain, $type);
+        // Send SMS based on mode and check provider result
+        $smsSent = $this->sendSms($phone, $plain, $type);
+
+        if ($this->mode === 'sms' && !$smsSent) {
+            Log::error('OTP SMS failed to send via provider', [
+                'phone' => $phone,
+                'type' => $type,
+            ]);
+
+            return [
+                'success' => false,
+                'message' => __('auth.failed_send_otp'),
+            ];
+        }
 
         Log::info("OTP [{$this->mode} mode] sent to {$phone} for {$type}", [
             'phone' => $phone,
             'type' => $type,
             'mode' => $this->mode,
             'code' => $this->mode === 'fixed' ? $plain : 'hidden', // Only log fixed code for dev
+            'sms_sent' => $smsSent,
         ]);
 
         return [
@@ -360,6 +373,11 @@ class OtpService
      */
     protected function canResend(string $phone, string $type): bool
     {
+        // In fixed (development) mode allow immediate resend to facilitate testing
+        if ($this->mode === 'fixed') {
+            return true;
+        }
+
         try {
             $recent = OtpCode::where('phone', $phone)
                 ->where('type', $type)
@@ -408,7 +426,11 @@ class OtpService
     /**
      * Send SMS based on configured mode
      */
-    protected function sendSms(string $phone, string $code, string $type): void
+    /**
+     * Send SMS based on configured mode
+     * Returns true when message was queued/sent (or logged in dev), false on failure.
+     */
+    protected function sendSms(string $phone, string $code, string $type): bool
     {
         $messages = [
             'register' => "Your verification code is: {$code}",
@@ -419,10 +441,23 @@ class OtpService
 
         if ($this->mode === 'sms') {
             // Full SMS mode - actually send via SMS provider
-            $this->smsService->send($phone, $message);
+            try {
+                $result = $this->smsService->send($phone, $message);
+                if ($result) {
+                    return true;
+                }
+
+                // Provider indicated failure
+                Log::error('SMS provider reported failure', ['phone' => $phone, 'type' => $type]);
+                return false;
+            } catch (\Throwable $e) {
+                Log::error('SMS provider exception', ['error' => $e->getMessage(), 'phone' => $phone]);
+                return false;
+            }
         } else {
             // Fixed or random mode - just log
             Log::info("[OTP {$this->mode}] Would send to {$phone}: {$message}");
+            return true;
         }
     }
 
