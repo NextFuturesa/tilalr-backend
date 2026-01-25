@@ -9,7 +9,7 @@ use Illuminate\Support\ServiceProvider;
 class CsrfTokenResponseProvider extends ServiceProvider
 {
     /**
-     * Register services.
+     * Register services. thus register any application services.
      */
     public function register(): void
     {

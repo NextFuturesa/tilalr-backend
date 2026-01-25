@@ -16,9 +16,27 @@ class PermissionResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-key';
 
-    protected static ?string $navigationGroup = 'Administration';
-
     protected static ?int $navigationSort = 2;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.administration');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.permission');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.permissions');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.permissions');
+    }
 
     public static function canAccess(): bool
     {
@@ -63,18 +81,24 @@ class PermissionResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Permission Key')
+                    ->label(fn () => __('admin.form.permission_key'))
                     ->searchable()
                     ->sortable()
-                    ->copyable(),
+                    ->copyable()
+                    ->formatStateUsing(fn (string $state) => __("permissions.{$state}", ['default' => $state])),
 
                 Tables\Columns\TextColumn::make('display_name')
-                    ->label('Display Name')
-                    ->searchable()
-                    ->sortable(),
+                    ->label(fn () => __('admin.form.display_name'))
+                    ->getStateUsing(function ($record) {
+                        // Use the permission name (key) to look up the translation
+                        $key = $record->name;
+                        return __("permissions.{$key}_desc", ['default' => $record->display_name]);
+                    })
+                    ->searchable('display_name')
+                    ->sortable('display_name'),
 
                 Tables\Columns\TextColumn::make('group')
-                    ->label('Group')
+                    ->label(fn () => __('admin.form.group'))
                     ->badge()
                     ->sortable(),
 

@@ -22,23 +22,48 @@ class PaymentResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.payments');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.payment');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.payments');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.payments');
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('booking_id')
+                    ->label(__('admin.form.booking_id'))
                     ->required()
                     ->numeric(),
                 Forms\Components\TextInput::make('method')
+                    ->label(__('admin.form.method'))
                     ->required()
                     ->maxLength(255)
                     ->default('dummy'),
                 Forms\Components\TextInput::make('status')
+                    ->label(__('admin.form.status'))
                     ->required(),
                 Forms\Components\TextInput::make('transaction_id')
+                    ->label(__('admin.form.transaction_id'))
                     ->maxLength(255)
                     ->default(null),
                 Forms\Components\Textarea::make('meta')
+                    ->label(__('admin.form.meta'))
                     ->columnSpanFull(),
             ]);
     }
@@ -48,18 +73,24 @@ class PaymentResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('booking_id')
+                    ->label(__('admin.form.booking_id'))
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('method')
+                    ->label(__('admin.table.method'))
                     ->searchable(),
-                Tables\Columns\TextColumn::make('status'),
+                Tables\Columns\TextColumn::make('status')
+                    ->label(__('admin.table.status')),
                 Tables\Columns\TextColumn::make('transaction_id')
+                    ->label(__('admin.table.transaction_id'))
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
+                    ->label(__('admin.table.created_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('updated_at')
+                    ->label(__('admin.table.updated_at'))
                     ->dateTime()
                     ->sortable()
                     ->toggleable(isToggledHiddenByDefault: true),
@@ -68,11 +99,11 @@ class PaymentResource extends Resource
                 //
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
+                Tables\Actions\EditAction::make()->label(__('admin.actions.edit')),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
+                    Tables\Actions\DeleteBulkAction::make()->label(__('admin.actions.bulk_delete')),
                 ]),
             ]);
     }

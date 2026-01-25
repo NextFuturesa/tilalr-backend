@@ -21,11 +21,29 @@ class ReservationResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-calendar-days';
     
-    protected static ?string $navigationGroup = 'Reservations & Bookings';
-    
     protected static ?int $navigationSort = 1;
 
     protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.reservations_bookings');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.reservation');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.reservations');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.reservations');
+    }
 
     public static function getNavigationBadge(): ?string
     {
@@ -41,12 +59,14 @@ class ReservationResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('Customer Information')
+                Forms\Components\Section::make(__('admin.form.customer_information'))
                     ->schema([
                         Forms\Components\TextInput::make('name')
+                            ->label(__('admin.form.name'))
                             ->required()
                             ->maxLength(255),
                         Forms\Components\TextInput::make('email')
+                            ->label(__('admin.form.email'))
                             ->email()
                             ->required()
                             ->maxLength(255),

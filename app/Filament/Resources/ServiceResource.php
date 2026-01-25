@@ -29,8 +29,26 @@ class ServiceResource extends Resource
     protected static ?string $model = Service::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    
-    protected static ?string $navigationGroup = 'Content';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.content');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.service');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.services');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.services');
+    }
 
     public static function form(\Filament\Forms\Form $form): \Filament\Forms\Form
     {

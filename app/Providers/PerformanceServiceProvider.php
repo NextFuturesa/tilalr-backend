@@ -14,7 +14,7 @@ class PerformanceServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        //this register method is intentionally left blank
     }
 
     /**
@@ -35,7 +35,7 @@ class PerformanceServiceProvider extends ServiceProvider
             });
         }
 
-        // Add global query optimization
+        // Add global query optimization macro
         Builder::macro('optimize', function () {
             return $this->select(['id', 'created_at', 'updated_at'])
                         ->orderBy('created_at', 'desc');

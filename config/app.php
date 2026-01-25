@@ -176,6 +176,7 @@ return [
         App\Providers\AppServiceProvider::class,
         App\Providers\PerformanceServiceProvider::class,
         App\Providers\CsrfTokenProvider::class,
+        App\Providers\LocalizationServiceProvider::class,
         App\Providers\Filament\AdminPanelProvider::class,
     ],
 

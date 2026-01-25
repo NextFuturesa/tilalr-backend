@@ -17,7 +17,26 @@ class AppSettingResource extends Resource
     protected static ?string $model = AppSetting::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-cog-6-tooth';
-    protected static ?string $navigationGroup = 'Website';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.website');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.setting');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.settings');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.settings');
+    }
     
     // Only Super Admin can change app settings
     public static function canAccess(): bool
@@ -25,7 +44,6 @@ class AppSettingResource extends Resource
         $user = auth()->user();
         return $user && $user->hasRole('super_admin');
     }
-    protected static ?string $navigationLabel = 'Settings';
 
     public static function form(\Filament\Forms\Form $form): \Filament\Forms\Form
     {

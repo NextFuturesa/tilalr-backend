@@ -28,6 +28,26 @@ class ProjectResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.content');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.project');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.projects');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.projects');
+    }
+
     /**
      * Hide this resource from the admin navigation (not shown in menu)
      */

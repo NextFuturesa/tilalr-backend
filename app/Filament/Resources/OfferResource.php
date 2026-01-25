@@ -22,18 +22,34 @@ class OfferResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-tag';
 
-    protected static ?string $navigationLabel = 'Offers';
-    
-    protected static ?string $navigationGroup = 'Content';
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.content');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.offer');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.offers');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.offers');
+    }
 
     public static function form(Form $form): Form
     {
         return $form->schema([
-            Forms\Components\Section::make('Language Tools')
+            Forms\Components\Section::make(__('admin.form.language_tools'))
                 ->schema([
                     Forms\Components\Toggle::make('copy_en_to_ar')
-                        ->label(__('offers.copy_en_to_ar'))
-                        ->helperText(__('offers.copy_helper'))
+                        ->label(__('admin.form.copy_en_to_ar'))
+                        ->helperText(__('admin.form.copy_helper'))
                         ->dehydrated(false)
                         ->reactive()
                         ->afterStateUpdated(function ($state, $set, $get, $context) {
@@ -54,47 +70,47 @@ class OfferResource extends Resource
 
             Forms\Components\Tabs::make('Content')
                 ->tabs([
-                    Forms\Components\Tabs\Tab::make('English')
+                    Forms\Components\Tabs\Tab::make(__('admin.form.english_tab'))
                         ->schema([
                             // Basic fields
-                            Forms\Components\TextInput::make('title_en')->required()->label('Title (EN)'),
-                            Forms\Components\Textarea::make('description_en')->label('Description (EN)'),
-                            Forms\Components\TextInput::make('location_en')->label('Location (EN)'),
+                            Forms\Components\TextInput::make('title_en')->required()->label(__('admin.form.title_en')),
+                            Forms\Components\Textarea::make('description_en')->label(__('admin.form.description_en')),
+                            Forms\Components\TextInput::make('location_en')->label(__('admin.form.location_en')),
 
                             // Details
-                            Forms\Components\TextInput::make('duration_en')->label('Duration (EN)'),
-                            Forms\Components\TextInput::make('group_size_en')->label('Group Size (EN)'),
-                            Forms\Components\TextInput::make('badge_en')->label('Badge (EN)'),
-                            Forms\Components\TagsInput::make('features_en')->label('Features (EN)')->placeholder('Add a feature and press Enter'),
-                            Forms\Components\TagsInput::make('highlights_en')->label('Highlights (EN)')->placeholder('Add a highlight and press Enter'),
+                            Forms\Components\TextInput::make('duration_en')->label(__('admin.form.duration') . ' (EN)'),
+                            Forms\Components\TextInput::make('group_size_en')->label(__('admin.form.group_size_en')),
+                            Forms\Components\TextInput::make('badge_en')->label(__('admin.form.badge_en')),
+                            Forms\Components\TagsInput::make('features_en')->label(__('admin.form.features_en'))->placeholder(__('admin.placeholders.add_feature')),
+                            Forms\Components\TagsInput::make('highlights_en')->label(__('admin.form.highlights_en'))->placeholder(__('admin.placeholders.add_highlight')),
                         ])->columnSpanFull(),
 
-                    Forms\Components\Tabs\Tab::make('العربية')
+                    Forms\Components\Tabs\Tab::make(__('admin.form.arabic_tab'))
                         ->schema([
                             // Basic fields (Arabic)
-                            Forms\Components\TextInput::make('title_ar')->required()->label('Title (AR)')->extraAttributes(['dir'=>'rtl']),
-                            Forms\Components\Textarea::make('description_ar')->label('Description (AR)')->extraAttributes(['dir'=>'rtl']),
-                            Forms\Components\TextInput::make('location_ar')->label('Location (AR)')->extraAttributes(['dir'=>'rtl']),
+                            Forms\Components\TextInput::make('title_ar')->required()->label(__('admin.form.title_ar'))->extraAttributes(['dir'=>'rtl']),
+                            Forms\Components\Textarea::make('description_ar')->label(__('admin.form.description_ar'))->extraAttributes(['dir'=>'rtl']),
+                            Forms\Components\TextInput::make('location_ar')->label(__('admin.form.location_ar'))->extraAttributes(['dir'=>'rtl']),
 
                             // Details (Arabic)
-                            Forms\Components\TextInput::make('duration_ar')->label('Duration (AR)')->extraAttributes(['dir' => 'rtl']),
-                            Forms\Components\TextInput::make('group_size_ar')->label('Group Size (AR)')->extraAttributes(['dir' => 'rtl']),
-                            Forms\Components\TextInput::make('badge_ar')->label('Badge (AR)')->extraAttributes(['dir' => 'rtl']),
-                            Forms\Components\TagsInput::make('features_ar')->label('Features (AR)')->placeholder('أضف ميزة ثم اضغط Enter')->extraAttributes(['dir' => 'rtl']),
-                            Forms\Components\TagsInput::make('highlights_ar')->label('Highlights (AR)')->placeholder('أضف نقطة ثم اضغط Enter')->extraAttributes(['dir' => 'rtl']),
+                            Forms\Components\TextInput::make('duration_ar')->label(__('admin.form.duration') . ' (AR)')->extraAttributes(['dir' => 'rtl']),
+                            Forms\Components\TextInput::make('group_size_ar')->label(__('admin.form.group_size_ar'))->extraAttributes(['dir' => 'rtl']),
+                            Forms\Components\TextInput::make('badge_ar')->label(__('admin.form.badge_ar'))->extraAttributes(['dir' => 'rtl']),
+                            Forms\Components\TagsInput::make('features_ar')->label(__('admin.form.features_ar'))->placeholder(__('admin.placeholders.add_feature'))->extraAttributes(['dir' => 'rtl']),
+                            Forms\Components\TagsInput::make('highlights_ar')->label(__('admin.form.highlights_ar'))->placeholder(__('admin.placeholders.add_highlight'))->extraAttributes(['dir' => 'rtl']),
                         ])->columnSpanFull(),
                 ])->columnSpanFull(),
 
             // Keep discount as a single (non-localized) field for now
-            Forms\Components\Section::make('Pricing')
+            Forms\Components\Section::make(__('admin.form.pricing'))
                 ->schema([
-                    Forms\Components\TextInput::make('discount')->label('Discount'),
+                    Forms\Components\TextInput::make('discount')->label(__('admin.form.discount')),
                 ])->columns(1),
 
-            Forms\Components\Section::make('Media & Status')
+            Forms\Components\Section::make(__('admin.form.media_status'))
                 ->schema([
-                    Forms\Components\FileUpload::make('image')->image()->directory('offers')->label('Image'),
-                    Forms\Components\Toggle::make('is_active')->label('Active')->default(true),
+                    Forms\Components\FileUpload::make('image')->image()->directory('offers')->label(__('admin.form.image')),
+                    Forms\Components\Toggle::make('is_active')->label(__('admin.form.is_active'))->default(true),
                 ])->columns(2),
         ]);
     }
@@ -108,16 +124,16 @@ class OfferResource extends Resource
             }
         }
         return $table->columns([
-            Tables\Columns\TextColumn::make('title_en')->label('Title (EN)')->searchable()->sortable(),
-            Tables\Columns\TextColumn::make('duration')->label('Duration'),
-            Tables\Columns\TextColumn::make('discount')->label('Discount'),
-            Tables\Columns\IconColumn::make('is_active')->boolean()->label('Active'),
+            Tables\Columns\TextColumn::make('title_en')->label(__('admin.form.title_en'))->searchable()->sortable(),
+            Tables\Columns\TextColumn::make('duration')->label(__('admin.form.duration')),
+            Tables\Columns\TextColumn::make('discount')->label(__('admin.form.discount')),
+            Tables\Columns\IconColumn::make('is_active')->boolean()->label(__('admin.table.active')),
         ])->actions([
-            Tables\Actions\EditAction::make(),
-            Tables\Actions\DeleteAction::make(),
+            Tables\Actions\EditAction::make()->label(__('admin.actions.edit')),
+            Tables\Actions\DeleteAction::make()->label(__('admin.actions.delete')),
         ])->bulkActions([
             Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
+                Tables\Actions\DeleteBulkAction::make()->label(__('admin.actions.bulk_delete')),
             ]),
         ]);
     }

@@ -18,11 +18,27 @@ class CustomPaymentOfferResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-currency-dollar';
 
-    protected static ?string $navigationLabel = 'Custom Payment Offers';
-
-    protected static ?string $navigationGroup = 'Payments';
-
     protected static ?int $navigationSort = 2;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.payments');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.custom_payment_offer');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.custom_payment_offers');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.custom_payment_offers');
+    }
 
     /**
      * Access control based on permissions
@@ -256,24 +272,29 @@ class CustomPaymentOfferResource extends Resource
             ])
             ->actions([
                 Tables\Actions\Action::make('copyLink')
-                    ->label('Copy Link')
+                    ->label(__('admin.actions.copy_link'))
                     ->icon('heroicon-o-clipboard-document')
                     ->color('info')
                     ->requiresConfirmation(false)
                     ->action(function (CustomPaymentOffer $record) {
-                        // Keep server-side notification as a fallback/log, but actual copy is done client-side
                         $frontendUrl = config('app.frontend_url', 'http://localhost:3000');
                         $paymentLink = $frontendUrl . '/en/pay-custom-offer/' . $record->unique_link;
 
                         Notification::make()
-                            ->title('Payment Link Ready')
-                            ->body('Click the button to copy the link to clipboard')
+                            ->title(__('admin.notifications.payment_link_copied'))
+                            ->body('Payment Link:' . PHP_EOL . $paymentLink)
                             ->success()
+                            ->actions([
+                                \Filament\Notifications\Actions\Action::make('copy')
+                                    ->label('Copy URL')
+                                    ->button()
+                                    ->close()
+                                    ->extraAttributes([
+                                        'onclick' => "navigator.clipboard.writeText(" . json_encode($paymentLink) . "); this.parentElement.parentElement.remove();",
+                                    ]),
+                            ])
                             ->send();
                     })
-                    ->extraAttributes(fn(CustomPaymentOffer $record) => [
-                        'onclick' => "event.preventDefault();(function(){try{navigator.clipboard.writeText('" . addslashes(config('app.frontend_url', 'http://localhost:3000') . '/en/pay-custom-offer/') . "' + '" . addslashes('".$record->unique_link."') . "').then(function(){alert('Payment link copied to clipboard');}).catch(function(){alert('Failed to copy link to clipboard');});}catch(e){alert('Copy not supported in this browser');}})();",
-                    ])
                     ->visible(fn(CustomPaymentOffer $record) => $record->payment_status === 'pending' && (auth()->user()?->hasRole('super_admin') || auth()->user()?->hasPermission('custom_payment_offers.view_payment_link'))),
                 Tables\Actions\ViewAction::make()
                     ->visible(fn() => auth()->user()?->hasRole('super_admin') || auth()->user()?->hasPermission('custom_payment_offers.manage_payments')),

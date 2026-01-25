@@ -11,12 +11,15 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
 use Filament\Widgets;
+use Filament\View\PanelsRenderHook;
 use Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Illuminate\Foundation\Http\Middleware\VerifyCsrfToken;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\Session\Middleware\StartSession;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
+use Illuminate\Support\Facades\Blade;
+use App\Livewire\LanguageSwitcher;
 
 class AdminPanelProvider extends PanelProvider
 {
@@ -51,25 +54,40 @@ class AdminPanelProvider extends PanelProvider
                 SubstituteBindings::class,
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
+                \App\Http\Middleware\SetLocale::class,
             ])
             ->authMiddleware([
                 Authenticate::class,
                 \App\Http\Middleware\AdminAccessMiddleware::class,
             ])
             ->maxContentWidth('full')
-            ->brandName('Admin Panel')
+            ->brandName(fn () => __('admin.panel_name'))
             ->favicon(asset('favicon.ico'))
             ->navigationGroups([
-                'Administration',
-                'Users', 
-                'Content',
-                'Local Destinations',
-                'International Destinations',
-                'Reservations & Bookings',
-                'Payments',
-                'Communication',
-                'Settings',
-                'Website',
-            ]);
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label(fn () => __('admin.nav.administration')),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label(fn () => __('admin.nav.users')),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label(fn () => __('admin.nav.content')),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label(fn () => __('admin.nav.local_destinations')),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label(fn () => __('admin.nav.international_destinations')),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label(fn () => __('admin.nav.reservations_bookings')),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label(fn () => __('admin.nav.payments')),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label(fn () => __('admin.nav.communication')),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label(fn () => __('admin.nav.settings')),
+                \Filament\Navigation\NavigationGroup::make()
+                    ->label(fn () => __('admin.nav.website')),
+            ])
+            ->renderHook(
+                PanelsRenderHook::USER_MENU_BEFORE,
+                fn () => Blade::render('<livewire:language-switcher />')
+            );
     }
 }

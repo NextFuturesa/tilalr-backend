@@ -21,9 +21,27 @@ class CityResource extends Resource
 {
     protected static ?string $model = City::class;
 
-    protected static ?string $navigationLabel = 'Destinations';
-    protected static ?string $pluralModelLabel = 'Destinations';
     protected static ?string $navigationIcon = 'heroicon-o-map';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.destinations');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.destination');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.destinations');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.destinations');
+    }
 
     public static function shouldRegisterNavigation(): bool
     {

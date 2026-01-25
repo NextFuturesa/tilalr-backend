@@ -21,9 +21,27 @@ class ProductResource extends Resource
 {
     protected static ?string $model = Product::class;
 
-    protected static ?string $navigationLabel = 'Products';
-    protected static ?string $pluralModelLabel = 'Products';
     protected static ?string $navigationIcon = 'heroicon-o-tag';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.content');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.product');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.products');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.products');
+    }
 
     public static function shouldRegisterNavigation(): bool
     {

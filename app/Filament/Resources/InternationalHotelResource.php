@@ -18,10 +18,28 @@ class InternationalHotelResource extends Resource
     protected static ?string $model = InternationalHotel::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-building-office-2';
-    
-    protected static ?string $navigationGroup = 'International Destinations';
 
     protected static ?int $navigationSort = 3;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.international_destinations');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.international_hotel');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.international_hotels');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.international_hotels');
+    }
 
     public static function getPermissionKey(): string
     {

@@ -19,14 +19,26 @@ class InternationalIslandResource extends Resource
     protected static ?string $model = IslandDestination::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-globe-europe-africa';
-    
-    protected static ?string $navigationLabel = 'International Islands';
-    
-    protected static ?string $modelLabel = 'International Island';
-    
-    protected static ?string $pluralModelLabel = 'International Islands';
-    
-    protected static ?string $navigationGroup = 'International Destinations';
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.international_destinations');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.international_island');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.international_islands');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.international_islands');
+    }
 
     protected static ?int $navigationSort = 5;
 

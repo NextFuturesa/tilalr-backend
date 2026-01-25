@@ -17,9 +17,27 @@ class RoleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
 
-    protected static ?string $navigationGroup = 'Administration';
-
     protected static ?int $navigationSort = 1;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.administration');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.role');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.roles');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.roles');
+    }
 
     public static function canAccess(): bool
     {
@@ -82,10 +100,11 @@ class RoleResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name')
-                    ->label('Role Key')
+                    ->label(fn () => __('admin.form.role_key'))
                     ->searchable()
                     ->sortable()
                     ->badge()
+                    ->formatStateUsing(fn (string $state) => __("roles.{$state}", ['default' => $state]))
                     ->color(fn (string $state): string => match ($state) {
                         'super_admin' => 'danger',
                         'executive_manager' => 'warning',
@@ -95,9 +114,14 @@ class RoleResource extends Resource
                     }),
 
                 Tables\Columns\TextColumn::make('display_name')
-                    ->label('Display Name')
-                    ->searchable()
-                    ->sortable(),
+                    ->label(fn () => __('admin.form.display_name'))
+                    ->getStateUsing(function ($record) {
+                        // Use the role name (key) to look up the translation
+                        $key = $record->name;
+                        return __("roles.{$key}", ['default' => $record->display_name]);
+                    })
+                    ->searchable('display_name')
+                    ->sortable('display_name'),
 
                 Tables\Columns\TextColumn::make('permissions_count')
                     ->label('Permissions')

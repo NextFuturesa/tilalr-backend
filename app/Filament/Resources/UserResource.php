@@ -23,9 +23,27 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-users';
     
-    protected static ?string $navigationGroup = 'Users';
-    
     protected static ?int $navigationSort = 2;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.users');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.user');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.users');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.users');
+    }
 
     // Only Super Admin can manage users
     public static function canAccess(): bool
@@ -38,42 +56,42 @@ class UserResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\Section::make('User Information')
+                Forms\Components\Section::make(__('admin.form.customer_information'))
                     ->schema([
                         Forms\Components\TextInput::make('name')
                             ->required()
                             ->maxLength(255)
-                            ->label('Full Name'),
+                            ->label(__('admin.form.full_name')),
                         
                         Forms\Components\TextInput::make('email')
                             ->email()
                             ->required()
                             ->maxLength(255)
                             ->unique(ignoreRecord: true)
-                            ->label('Email Address'),
+                            ->label(__('admin.form.email_address')),
 
                         Forms\Components\TextInput::make('phone')
                             ->tel()
                             ->maxLength(20)
-                            ->label('Phone Number'),
+                            ->label(__('admin.form.phone_number')),
                         
                         Forms\Components\TextInput::make('password')
                             ->password()
                             ->dehydrateStateUsing(fn ($state) => Hash::make($state))
                             ->dehydrated(fn ($state) => !empty($state))
                             ->required(fn (string $context): bool => $context === 'create')
-                            ->label('Password')
-                            ->helperText(fn (string $context): string => $context === 'edit' ? 'Leave blank to keep current password' : ''),
+                            ->label(__('admin.form.password'))
+                            ->helperText(fn (string $context): string => $context === 'edit' ? __('admin.form.leave_blank_password') : ''),
                         
                         Forms\Components\Toggle::make('is_admin')
-                            ->label('Admin Access')
-                            ->helperText('Grant this user access to the admin panel')
+                            ->label(__('admin.form.admin_access'))
+                            ->helperText(__('admin.form.admin_access_helper'))
                             ->default(false),
                     ])
                     ->columns(2),
 
-                Forms\Components\Section::make('Role Assignment')
-                    ->description('Assign one or more roles to this user. Roles determine what the user can access.')
+                Forms\Components\Section::make(__('admin.form.role_assignment'))
+                    ->description(__('admin.form.role_assignment_desc'))
                     ->schema([
                         Forms\Components\CheckboxList::make('roles')
                             ->relationship('roles', 'display_name')
@@ -83,7 +101,7 @@ class UserResource extends Resource
                             ->descriptions(
                                 Role::pluck('description', 'id')->filter()->toArray()
                             )
-                            ->helperText('Select the roles for this user'),
+                            ->helperText(__('admin.form.select_roles')),
                     ]),
             ]);
     }
@@ -95,15 +113,15 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->searchable()
                     ->sortable()
-                    ->label('Name'),
+                    ->label(__('admin.table.name')),
                 
                 Tables\Columns\TextColumn::make('email')
                     ->searchable()
                     ->sortable()
-                    ->label('Email'),
+                    ->label(__('admin.table.email')),
 
                 Tables\Columns\TextColumn::make('roles.display_name')
-                    ->label('Roles')
+                    ->label(__('admin.table.roles'))
                     ->badge()
                     ->color(fn (string $state): string => match ($state) {
                         'Super Admin' => 'danger',
@@ -116,7 +134,7 @@ class UserResource extends Resource
                 
                 Tables\Columns\IconColumn::make('is_admin')
                     ->boolean()
-                    ->label('Admin')
+                    ->label(__('admin.form.admin_access'))
                     ->trueIcon('heroicon-o-shield-check')
                     ->falseIcon('heroicon-o-user')
                     ->trueColor('success')
@@ -125,40 +143,43 @@ class UserResource extends Resource
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()
-                    ->label('Created')
+                    ->label(__('admin.table.created_at'))
                     ->toggleable(isToggledHiddenByDefault: true),
                 
                 Tables\Columns\TextColumn::make('updated_at')
                     ->dateTime()
                     ->sortable()
-                    ->label('Updated')
+                    ->label(__('admin.table.updated_at'))
                     ->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 Tables\Filters\SelectFilter::make('is_admin')
-                    ->label('User Type')
+                    ->label(__('admin.form.type'))
                     ->options([
-                        '0' => 'Regular Users',
-                        '1' => 'Admins',
+                        '0' => __('admin.resources.users'),
+                        '1' => __('admin.nav.administration'),
                     ])
                     ->default('0')
-                    ->placeholder('All'),
+                    ->placeholder(__('admin.misc.all')),
 
                 Tables\Filters\SelectFilter::make('roles')
                     ->relationship('roles', 'display_name')
-                    ->label('Role')
+                    ->label(__('admin.resources.role'))
                     ->preload(),
             ])
             ->actions([
                 Tables\Actions\EditAction::make()
+                    ->label(__('admin.actions.edit'))
                     ->icon('heroicon-o-pencil'),
                 Tables\Actions\DeleteAction::make()
+                    ->label(__('admin.actions.delete'))
                     ->icon('heroicon-o-trash')
                     ->requiresConfirmation(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make()
+                        ->label(__('admin.actions.bulk_delete'))
                         ->requiresConfirmation(),
                 ]),
             ])

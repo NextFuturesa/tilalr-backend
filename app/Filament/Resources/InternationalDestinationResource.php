@@ -18,12 +18,28 @@ class InternationalDestinationResource extends Resource
     protected static ?string $model = InternationalDestination::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-globe-alt';
-    
-    protected static ?string $navigationLabel = 'International Destinations';
-    
-    protected static ?string $navigationGroup = 'International Destinations';
 
     protected static ?int $navigationSort = 1;
+
+    public static function getNavigationGroup(): ?string
+    {
+        return __('admin.nav.international_destinations');
+    }
+
+    public static function getModelLabel(): string
+    {
+        return __('admin.resources.international_destination');
+    }
+
+    public static function getPluralModelLabel(): string
+    {
+        return __('admin.resources.international_destinations');
+    }
+
+    public static function getNavigationLabel(): string
+    {
+        return __('admin.resources.international_destinations');
+    }
 
     public static function getPermissionKey(): string
     {
