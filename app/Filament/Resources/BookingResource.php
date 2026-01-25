@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Filament\Resources;
 
 use App\Filament\Resources\BookingResource\Pages;
@@ -24,7 +23,6 @@ class BookingResource extends Resource
 
     // Display booking ID in admin UI
     protected static ?string $recordTitleAttribute = 'id';
-next_future_db
     public static function getNavigationGroup(): ?string
     {
         return __('admin.nav.reservations_bookings');
