@@ -37,7 +37,7 @@ class NewBookingPayment extends Notification
         $notes = $details['notes'] ?? 'None';
         
         return (new MailMessage)
-            ->subject(' حجز جديد - New Booking #' . $booking->id)
+            ->subject(' حجز جديد - New Booking #' . $booking->booking_number)
             ->greeting('New Booking Payment Received!')
             ->line('---')
             ->line('**معلومات العميل - Customer Details:**')
