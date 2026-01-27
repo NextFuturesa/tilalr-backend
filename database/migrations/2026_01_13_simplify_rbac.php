@@ -15,14 +15,15 @@ return new class extends Migration
         // Add allowed_modules to roles table
         if (Schema::hasTable('roles') && !Schema::hasColumn('roles', 'allowed_modules')) {
             Schema::table('roles', function (Blueprint $table) {
-                // MySQL <= 8.0 does not allow default values on JSON columns.
-                // Create the column as nullable first, populate it, then make it NOT NULL.
+                // Create column as nullable first
                 $table->json('allowed_modules')->nullable()->after('sort_order')->comment('List of modules this role can access');
             });
 
-            // Ensure existing rows get an empty array value and then make the column NOT NULL.
-            DB::table('roles')->whereNull('allowed_modules')->update(['allowed_modules' => json_encode([])]);
-            DB::statement("ALTER TABLE `roles` MODIFY `allowed_modules` JSON NOT NULL COMMENT 'List of modules this role can access'");
+            // Populate with default empty array
+            DB::table('roles')->whereNull('allowed_modules')->update(['allowed_modules' => '[]']);
+            
+            // Modify to NOT NULL with default
+            DB::statement("ALTER TABLE `roles` MODIFY `allowed_modules` JSON NOT NULL DEFAULT '[]' COMMENT 'List of modules this role can access'");
         }
 
         // Drop permission-related junction tables

@@ -99,14 +99,14 @@ class OtpService
             'phone' => $phone,
             'type' => $type,
             'mode' => $this->mode,
-            'code' => $this->mode === 'fixed' ? $plain : 'hidden', // Only log fixed code for dev
+            'code' => $plain, // Log code for all development modes
             'sms_sent' => $smsSent,
         ]);
 
         return [
             'success' => true,
             'message' => 'OTP sent successfully.',
-            'code' => $this->mode === 'fixed' ? $plain : null,
+            'code' => in_array($this->mode, ['fixed', 'random']) ? $plain : null, // Return code in dev modes
         ];
     }
 
