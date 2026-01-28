@@ -10,6 +10,7 @@ WORKDIR /var/www/html
 RUN apk add --no-cache \
     git \
     curl \
+    wget \
     libpng-dev \
     libjpeg-turbo-dev \
     freetype-dev \
@@ -41,7 +42,7 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Copy composer files first for better caching
-COPY composer.json composer.lock ./
+COPY composer.json composer.lock* ./
 
 # Install dependencies
 RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
@@ -49,8 +50,21 @@ RUN composer install --no-dev --no-scripts --no-autoloader --prefer-dist
 # Copy application files
 COPY . .
 
-# Generate optimized autoloader
-RUN composer dump-autoload --optimize --no-dev
+# Generate optimized autoloader (skip scripts that require artisan/database)
+RUN composer dump-autoload --optimize --no-dev --no-scripts
+
+# Create necessary storage directories
+RUN mkdir -p storage/app/public/trips \
+    && mkdir -p storage/app/public/islands \
+    && mkdir -p storage/app/public/offers \
+    && mkdir -p storage/app/public/sliders \
+    && mkdir -p storage/framework/cache \
+    && mkdir -p storage/framework/sessions \
+    && mkdir -p storage/framework/views \
+    && mkdir -p bootstrap/cache
+
+# Create storage symlink
+RUN rm -rf public/storage && ln -sf /var/www/html/storage/app/public /var/www/html/public/storage
 
 # Set permissions
 RUN chown -R www-data:www-data /var/www/html \
