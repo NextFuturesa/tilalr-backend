@@ -8,24 +8,15 @@
     "require": {
         "php": "^8.2",
         "doctrine/dbal": "^4.3",
-<<<<<<< Updated upstream
         "filament/filament": "^3.3",
-        "laravel/framework": "^12.0",
-        "laravel/sanctum": "^4.0",
-        "laravel/tinker": "^2.10.1",
-        "mcamara/laravel-localization": "^2.3",
-        "spatie/laravel-translatable": "^6.5",
-        "stripe/stripe-php": "^19.1",
-        "symfony/http-client": "^7.0",
-        "symfony/mailgun-mailer": "^7.0"
-=======
-        "filament/filament": "^3.0",
         "laravel/framework": "^12.0",
         "laravel/sanctum": "^4.3",
         "laravel/tinker": "^2.10.1",
         "mcamara/laravel-localization": "^2.3",
-        "spatie/laravel-translatable": "^6.11"
->>>>>>> Stashed changes
+        "spatie/laravel-translatable": "^6.11",
+        "stripe/stripe-php": "^19.1",
+        "symfony/http-client": "^7.0",
+        "symfony/mailgun-mailer": "^7.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.23",
@@ -51,12 +42,8 @@
     "scripts": {
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
-<<<<<<< Updated upstream
-            "@php artisan package:discover --ansi"
-=======
             "@php artisan package:discover --ansi",
             "@php artisan filament:upgrade"
->>>>>>> Stashed changes
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
@@ -90,12 +77,9 @@
         "allow-plugins": {
             "pestphp/pest-plugin": true,
             "php-http/discovery": true
-<<<<<<< Updated upstream
         },
         "platform": {
             "php": "8.2.27"
-=======
->>>>>>> Stashed changes
         }
     },
     "minimum-stability": "stable",

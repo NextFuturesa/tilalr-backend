@@ -9,6 +9,7 @@ use Filament\Infolists\Infolist;
 use Filament\Infolists\Components\Section;
 use Filament\Infolists\Components\TextEntry;
 use Filament\Infolists\Components\Grid;
+use Filament\Infolists\Components\View;
 use Filament\Notifications\Notification;
 
 class ViewCustomPaymentOffer extends ViewRecord
@@ -27,6 +28,19 @@ class ViewCustomPaymentOffer extends ViewRecord
 
         return $infolist
             ->schema([
+                Section::make('Token Number')
+                    ->icon('heroicon-o-hashtag')
+                    ->schema([
+                        TextEntry::make('token_number')
+                            ->label('Payment Token')
+                            ->size('lg')
+                            ->weight('bold')
+                            ->color('primary')
+                            ->copyable()
+                            ->copyMessage('Token copied!')
+                            ->copyMessageDuration(1500),
+                    ]),
+
                 Section::make('Customer Information')
                     ->icon('heroicon-o-user')
                     ->schema([
@@ -86,6 +100,10 @@ class ViewCustomPaymentOffer extends ViewRecord
                             ->copyMessageDuration(1500)
                             ->url($paymentLink, shouldOpenInNewTab: true)
                             ->color('primary'),
+                        View::make('custom-payment-offer-copy-button')
+                            ->viewData([
+                                'paymentLink' => $paymentLink,
+                            ]),
                     ])
                     ->visible(fn() => $this->record->payment_status === 'pending'),
 
@@ -120,22 +138,7 @@ class ViewCustomPaymentOffer extends ViewRecord
         $paymentLink = $frontendUrl . '/en/pay-custom-offer/' . $this->record->unique_link;
         
         return [
-            Actions\Action::make('copyLink')
-                ->label('Copy Payment Link')
-                ->icon('heroicon-o-clipboard-document')
-                ->color('info')
-                ->action(function () use ($paymentLink) {
-                    Notification::make()
-                        ->title('Payment Link Copied!')
-                        ->body('The payment link has been copied to your clipboard.')
-                        ->success()
-                        ->send();
-                })
-                ->extraAttributes([
-                    'onclick' => "navigator.clipboard.writeText('" . addslashes($paymentLink) . "'); return false;",
-                ])
-                ->visible(fn() => $this->record->payment_status === 'pending'),
-                
+
             Actions\Action::make('openLink')
                 ->label('Open Payment Page')
                 ->icon('heroicon-o-arrow-top-right-on-square')
