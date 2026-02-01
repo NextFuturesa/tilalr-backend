@@ -22,7 +22,7 @@ services:
       APP_KEY: ${APP_KEY}
       APP_DEBUG: ${APP_DEBUG:-true}
       APP_URL: ${APP_URL:-http://localhost:8000}
-      
+
       # Database
       DB_CONNECTION: mysql
       DB_HOST: mysql
@@ -30,14 +30,14 @@ services:
       DB_DATABASE: ${DB_DATABASE:-tilalr}
       DB_USERNAME: ${DB_USERNAME:-tilalr_user}
       DB_PASSWORD: ${DB_PASSWORD:-tilalr_password}
-      
+
       # Redis
       REDIS_HOST: redis
       REDIS_PORT: 6379
       CACHE_DRIVER: redis
       SESSION_DRIVER: redis
       QUEUE_CONNECTION: redis
-      
+
       # Mail
       MAIL_MAILER: ${MAIL_MAILER:-log}
       MAIL_HOST: ${MAIL_HOST}
@@ -47,22 +47,22 @@ services:
       MAIL_ENCRYPTION: ${MAIL_ENCRYPTION:-tls}
       MAIL_FROM_ADDRESS: ${MAIL_FROM_ADDRESS:-noreply@tilalr.com}
       MAIL_FROM_NAME: ${MAIL_FROM_NAME:-Tilalr}
-      
+
       # Stripe
       STRIPE_KEY: ${STRIPE_KEY}
       STRIPE_SECRET: ${STRIPE_SECRET}
       STRIPE_WEBHOOK_SECRET: ${STRIPE_WEBHOOK_SECRET}
-      
+
       # OTP & SMS Configuration
       OTP_MODE: ${OTP_MODE:-sms}
       OTP_FIXED_CODE: ${OTP_FIXED_CODE:-1234}
       OTP_EXPIRY_MINUTES: ${OTP_EXPIRY_MINUTES:-5}
       SMS_PROVIDER: ${SMS_PROVIDER:-taqnyat}
-      
+
       # Taqnyat SMS Provider
       TAQNYAT_BEARER_TOKEN: ${TAQNYAT_BEARER_TOKEN}
       TAQNYAT_SENDER: ${TAQNYAT_SENDER:-Tilalr}
-      
+
       # Auto migrate
       AUTO_MIGRATE: ${AUTO_MIGRATE:-true}
     ports:
@@ -70,37 +70,35 @@ services:
     volumes:
       - ./storage/app/public:/var/www/html/storage/app/public
     depends_on:
-      mysql:
-        condition: service_healthy
       redis:
         condition: service_healthy
     networks:
       - tilalr-network
 
   # ===========================================
-  # MySQL Database
+  # MySQL Database (Using Local MySQL - commented out)
   # ===========================================
-  mysql:
-    image: mysql:8.0
-    container_name: tilalr-mysql
-    restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
-      MYSQL_DATABASE: ${DB_DATABASE:-tilalr}
-      MYSQL_USER: ${DB_USERNAME:-tilalr_user}
-      MYSQL_PASSWORD: ${DB_PASSWORD:-tilalr_password}
-    ports:
-      - "${DB_PORT:-3306}:3306"
-    volumes:
-      - mysql_data:/var/lib/mysql
-    networks:
-      - tilalr-network
-    healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-rootpassword}"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-      start_period: 30s
+  # mysql:
+  #   image: mysql:8.0
+  #   container_name: tilalr-mysql
+  #   restart: unless-stopped
+  #   environment:
+  #     MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
+  #     MYSQL_DATABASE: ${DB_DATABASE:-tilalr}
+  #     MYSQL_USER: ${DB_USERNAME:-tilalr_user}
+  #     MYSQL_PASSWORD: ${DB_PASSWORD:-tilalr_password}
+  #   ports:
+  #     - "${DB_PORT:-3307}:3306"
+  #   volumes:
+  #     - mysql_data:/var/lib/mysql
+  #   networks:
+  #     - tilalr-network
+  #   healthcheck:
+  #     test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_ROOT_PASSWORD:-rootpassword}"]
+  #     interval: 10s
+  #     timeout: 5s
+  #     retries: 5
+  #     start_period: 30s
 
   # ===========================================
   # Redis Cache
