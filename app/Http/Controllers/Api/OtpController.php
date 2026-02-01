@@ -68,8 +68,8 @@ class OtpController extends Controller
         return response()->json([
             'success' => true,
             'message' => $result['message'],
-            // Include fixed OTP in dev mode for convenience
-            'dev_otp' => $this->otpService->isFixedMode() ? $result['code'] : null,
+            // Include OTP in dev modes (fixed/random) for convenience
+            'dev_otp' => $result['code'] ?? null,
             'mode' => $this->otpService->getMode(), // For debugging
         ]);
     }

@@ -10,7 +10,7 @@ class IslandDestinationSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     * 
+     *
      * Single seeder that handles both local and international destinations
      * based on the 'type' field condition.
      */
@@ -33,7 +33,7 @@ class IslandDestinationSeeder extends Seeder
                 'groupSize_ar' => '2-6 أشخاص',
                 'features_en' => json_encode(['Swimming', 'Snorkeling', 'Beach BBQ']),
                 'features_ar' => json_encode(['السباحة', 'الغطس بالأنابيب', 'حفلة شواء الشاطئ']),
-                'image' => 'international/8.webp',
+                'image' => 'islands/354.jpeg',
                 'price' => 99.00,
                 'rating' => 4.2,
                 'slug' => 'local-island-farasan',
@@ -156,7 +156,7 @@ class IslandDestinationSeeder extends Seeder
         // Log seeding completion
         $localCount = IslandDestination::where('type', 'local')->count();
         $internationalCount = IslandDestination::where('type', 'international')->count();
-        
+
         echo "✅ Island Destinations Seeded Successfully!\n";
         echo "   Local: {$localCount} | International: {$internationalCount}\n";
     }
