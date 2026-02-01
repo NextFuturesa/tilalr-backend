@@ -19,15 +19,13 @@ class InternationalHotelController extends Controller
                     if ($image) {
                         if (preg_match('/^https?:\/\//', $image)) {
                             $h->image = $image;
+                        } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'hotels/') || str_starts_with($image, 'islands/')) {
+                            // Serve directly from public folder
+                            $h->image = asset($image) . '?v=' . strtotime($h->updated_at);
                         } elseif (str_starts_with($image, 'storage/') || str_starts_with($image, '/storage/')) {
                             $h->image = asset($image) . '?v=' . strtotime($h->updated_at);
-                        } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'hotels/')) {
-                            $h->image = asset('storage/' . $image) . '?v=' . strtotime($h->updated_at);
-                        } elseif (str_starts_with($image, '/international') ) {
-                            // static frontend asset path
-                            $h->image = $image;
                         } else {
-                            $h->image = asset('storage/hotels/' . $image) . '?v=' . strtotime($h->updated_at);
+                            $h->image = asset($image) . '?v=' . strtotime($h->updated_at);
                         }
                     } else {
                         $h->image = null;
@@ -57,14 +55,13 @@ class InternationalHotelController extends Controller
             if ($image) {
                 if (preg_match('/^https?:\/\//', $image)) {
                     $hotel->image = $image;
+                } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'hotels/') || str_starts_with($image, 'islands/')) {
+                    // Serve directly from public folder
+                    $hotel->image = asset($image) . '?v=' . strtotime($hotel->updated_at);
                 } elseif (str_starts_with($image, 'storage/') || str_starts_with($image, '/storage/')) {
                     $hotel->image = asset($image) . '?v=' . strtotime($hotel->updated_at);
-                } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'hotels/')) {
-                    $hotel->image = asset('storage/' . $image) . '?v=' . strtotime($hotel->updated_at);
-                } elseif (str_starts_with($image, '/international') ) {
-                    $hotel->image = $image;
                 } else {
-                    $hotel->image = asset('storage/hotels/' . $image) . '?v=' . strtotime($hotel->updated_at);
+                    $hotel->image = asset($image) . '?v=' . strtotime($hotel->updated_at);
                 }
             } else {
                 $hotel->image = null;

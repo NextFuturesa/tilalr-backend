@@ -19,14 +19,13 @@ class InternationalPackageController extends Controller
                     if ($image) {
                         if (preg_match('/^https?:\/\//', $image)) {
                             $p->image = $image;
+                        } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'packages/') || str_starts_with($image, 'islands/')) {
+                            // Serve directly from public folder
+                            $p->image = asset($image) . '?v=' . strtotime($p->updated_at);
                         } elseif (str_starts_with($image, 'storage/') || str_starts_with($image, '/storage/')) {
                             $p->image = asset($image) . '?v=' . strtotime($p->updated_at);
-                        } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'packages/')) {
-                            $p->image = asset('storage/' . $image) . '?v=' . strtotime($p->updated_at);
-                        } elseif (str_starts_with($image, '/international') ) {
-                            $p->image = $image;
                         } else {
-                            $p->image = asset('storage/packages/' . $image) . '?v=' . strtotime($p->updated_at);
+                            $p->image = asset($image) . '?v=' . strtotime($p->updated_at);
                         }
                     } else {
                         $p->image = null;
@@ -56,14 +55,13 @@ class InternationalPackageController extends Controller
             if ($image) {
                 if (preg_match('/^https?:\/\//', $image)) {
                     $package->image = $image;
+                } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'packages/') || str_starts_with($image, 'islands/')) {
+                    // Serve directly from public folder
+                    $package->image = asset($image) . '?v=' . strtotime($package->updated_at);
                 } elseif (str_starts_with($image, 'storage/') || str_starts_with($image, '/storage/')) {
                     $package->image = asset($image) . '?v=' . strtotime($package->updated_at);
-                } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'packages/')) {
-                    $package->image = asset('storage/' . $image) . '?v=' . strtotime($package->updated_at);
-                } elseif (str_starts_with($image, '/international') ) {
-                    $package->image = $image;
                 } else {
-                    $package->image = asset('storage/packages/' . $image) . '?v=' . strtotime($package->updated_at);
+                    $package->image = asset($image) . '?v=' . strtotime($package->updated_at);
                 }
             } else {
                 $package->image = null;
