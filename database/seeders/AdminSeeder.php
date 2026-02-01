@@ -13,11 +13,11 @@ class AdminSeeder extends Seeder
     {
         User::updateOrCreate(
             [
-                "email" => "info@tilalr.com"
+                "email" => "superadmin@tilalr.com"
             ],
             [
                 "name" => "Admin",
-                "password" => bcrypt("password123"),
+                "password" => bcrypt("superadmin123"),
                 "is_admin" => true,
             ]
         );

@@ -9,20 +9,29 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Role extends Model
 {
     protected $fillable = [
-        'name', // 'executive_manager', 'consultant', 'administration'
-        'display_name', // 'Executive Manager'
+        'name',
+        'display_name',
         'description',
-        'title_en', // legacy
-        'title_ar', // legacy
-        'description_en', // legacy
-        'description_ar', // legacy
+        'title_en',
+        'title_ar',
+        'description_en',
+        'description_ar',
         'is_active',
         'sort_order',
+        'allowed_modules',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'sort_order' => 'integer',
+        'allowed_modules' => 'array',
+    ];
+
+    /**
+     * Default attributes for the model
+     */
+    protected $attributes = [
+        'allowed_modules' => '[]',
     ];
 
     /**
@@ -35,12 +44,8 @@ class Role extends Model
     }
 
     /**
-<<<<<<< Updated upstream
-     * Relationship: Role has many permissions
-=======
-     * Relationship: Role belongs to many permissions
->>>>>>> Stashed changes
-     */
+
+     * Relationship: Role has many permissions*/
     public function permissions(): BelongsToMany
     {
         return $this->belongsToMany(Permission::class, 'permission_role')
