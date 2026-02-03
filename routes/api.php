@@ -88,6 +88,9 @@ Route::get('/international/packages', [InternationalPackageController::class, 'i
 Route::get('/international/packages/{id}', [InternationalPackageController::class, 'show']);
 
 Route::get('/international/destinations', [InternationalDestinationController::class, 'index']);
+Route::get('/international/destinations/countries', [InternationalDestinationController::class, 'countries']);
+Route::get('/international/destinations/cities', [InternationalDestinationController::class, 'cities']);
+Route::get('/international/destinations/filter', [InternationalDestinationController::class, 'filter']);
 
 // Public Offers API
 Route::get('/offers', [\App\Http\Controllers\Api\OfferController::class, 'index']);

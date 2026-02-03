@@ -215,7 +215,16 @@ class ReservationResource extends Resource
                     }),
                 Tables\Columns\TextColumn::make('trip_title')
                     ->limit(30)
-                    ->toggleable(),
+                    ->toggleable()
+                    ->label('Destination'),
+                Tables\Columns\TextColumn::make('details.country')
+                    ->label('Country')
+                    ->toggleable()
+                    ->formatStateUsing(fn ($state) => $state ?? 'N/A'),
+                Tables\Columns\TextColumn::make('details.city')
+                    ->label('City')
+                    ->toggleable()
+                    ->formatStateUsing(fn ($state) => $state ?? 'N/A'),
                 Tables\Columns\TextColumn::make('details.numberOfGuests')
                     ->label('Booking Guests')
                     ->toggleable()

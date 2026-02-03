@@ -9,6 +9,10 @@ class InternationalDestination extends Model
     protected $fillable = [
         'name_en',
         'name_ar',
+        'country_en',
+        'country_ar',
+        'city_en',
+        'city_ar',
         'description_en',
         'description_ar',
         'image',

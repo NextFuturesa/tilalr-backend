@@ -106,7 +106,7 @@ class ReservationController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|max:255',
             'phone' => 'nullable|string|max:20',
-            'trip_type' => 'nullable|string|in:school,corporate,family,private',
+            'trip_type' => 'nullable|string|in:activity,hotel,flight,package,school,corporate,family,private',
             'trip_slug' => 'nullable|string|max:255',
             'trip_title' => 'nullable|string|max:255',
             'preferred_date' => 'nullable|date|after_or_equal:yesterday',

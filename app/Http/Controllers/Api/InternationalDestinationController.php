@@ -86,6 +86,10 @@ class InternationalDestinationController extends Controller
             $validated = $request->validate([
                 'name_en' => 'required|string|max:255',
                 'name_ar' => 'required|string|max:255',
+                'country_en' => 'nullable|string|max:255',
+                'country_ar' => 'nullable|string|max:255',
+                'city_en' => 'nullable|string|max:255',
+                'city_ar' => 'nullable|string|max:255',
                 'description_en' => 'required|string',
                 'description_ar' => 'required|string',
                 'image' => 'nullable|string',
@@ -116,6 +120,10 @@ class InternationalDestinationController extends Controller
             $validated = $request->validate([
                 'name_en' => 'string|max:255',
                 'name_ar' => 'string|max:255',
+                'country_en' => 'nullable|string|max:255',
+                'country_ar' => 'nullable|string|max:255',
+                'city_en' => 'nullable|string|max:255',
+                'city_ar' => 'nullable|string|max:255',
                 'description_en' => 'string',
                 'description_ar' => 'string',
                 'image' => 'nullable|string',
@@ -152,6 +160,121 @@ class InternationalDestinationController extends Controller
             return response()->json([
                 'success' => false,
                 'message' => 'Error deleting destination: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get unique countries from international destinations for dropdown
+     */
+    public function countries()
+    {
+        try {
+            $countries = InternationalDestination::where('active', true)
+                ->whereNotNull('country_en')
+                ->select('country_en', 'country_ar')
+                ->distinct()
+                ->orderBy('country_en')
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'id' => strtolower(str_replace(' ', '_', $item->country_en)),
+                        'name_en' => $item->country_en,
+                        'name_ar' => $item->country_ar ?? $item->country_en,
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'data' => $countries,
+                'message' => 'Countries retrieved successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving countries: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get cities for a specific country from international destinations
+     */
+    public function cities(Request $request)
+    {
+        try {
+            $countryEn = $request->query('country');
+            
+            $query = InternationalDestination::where('active', true)
+                ->whereNotNull('city_en');
+
+            if ($countryEn) {
+                $query->where('country_en', 'like', '%' . $countryEn . '%');
+            }
+
+            $cities = $query
+                ->select('city_en', 'city_ar', 'country_en')
+                ->distinct()
+                ->orderBy('city_en')
+                ->get()
+                ->map(function ($item) {
+                    return [
+                        'id' => strtolower(str_replace(' ', '_', $item->city_en)),
+                        'name_en' => $item->city_en,
+                        'name_ar' => $item->city_ar ?? $item->city_en,
+                        'country_en' => $item->country_en,
+                    ];
+                });
+
+            return response()->json([
+                'success' => true,
+                'data' => $cities,
+                'message' => 'Cities retrieved successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving cities: ' . $e->getMessage()
+            ], 500);
+        }
+    }
+
+    /**
+     * Get destinations filtered by country and/or city
+     */
+    public function filter(Request $request)
+    {
+        try {
+            $query = InternationalDestination::where('active', true);
+
+            if ($request->has('country') && $request->country) {
+                $query->where('country_en', 'like', '%' . $request->country . '%');
+            }
+
+            if ($request->has('city') && $request->city) {
+                $query->where('city_en', 'like', '%' . $request->city . '%');
+            }
+
+            $destinations = $query
+                ->orderBy('name_en')
+                ->get()
+                ->map(function ($d) {
+                    $image = $d->image ? ltrim($d->image, '/') : null;
+                    if ($image && !preg_match('/^https?:\/\//', $image)) {
+                        $d->image = asset($image) . '?v=' . strtotime($d->updated_at);
+                    }
+                    return $d;
+                });
+
+            return response()->json([
+                'success' => true,
+                'data' => $destinations,
+                'message' => 'Destinations filtered successfully'
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error filtering destinations: ' . $e->getMessage()
             ], 500);
         }
     }

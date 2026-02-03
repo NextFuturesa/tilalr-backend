@@ -54,6 +54,12 @@ class InternationalHotelResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name_en')->required()->label('Name (EN)'),
                         Forms\Components\TextInput::make('name_ar')->label('Name (AR)'),
+                        Forms\Components\TextInput::make('country_en')->label('Country (EN)')
+                            ->helperText('e.g., UAE, Turkey, Thailand'),
+                        Forms\Components\TextInput::make('country_ar')->label('Country (AR)'),
+                        Forms\Components\TextInput::make('city_en')->label('City (EN)')
+                            ->helperText('e.g., Dubai, Istanbul, Bangkok'),
+                        Forms\Components\TextInput::make('city_ar')->label('City (AR)'),
                         Forms\Components\TextInput::make('location_en')->required()->label('Location (EN)'),
                         Forms\Components\TextInput::make('location_ar')->label('Location (AR)'),
                         Forms\Components\TextInput::make('stars')->numeric()->minValue(1)->maxValue(5)->label('Stars'),
@@ -71,16 +77,21 @@ class InternationalHotelResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name_en')->label('Name (EN)')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('location_en')->label('Location (EN)')->searchable(),
+                Tables\Columns\TextColumn::make('country_en')->label('Country')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('city_en')->label('City')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('location_en')->label('Location')->searchable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('stars')->label('Stars'),
                 Tables\Columns\TextColumn::make('price_per_night')->label('Price')->money('usd', true),
                 Tables\Columns\IconColumn::make('active')->boolean()->label('Active'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('country_en')
+                    ->label('Country')
+                    ->options(fn () => InternationalHotel::distinct()->pluck('country_en', 'country_en')->filter()->toArray()),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
