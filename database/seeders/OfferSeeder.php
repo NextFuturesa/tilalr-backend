@@ -12,7 +12,7 @@ class OfferSeeder extends Seeder
     {
         // Clear existing offers
         DB::table('offers')->truncate();
-        
+
         $offers = [
             [
                 'slug' => 'alula-day-trip',

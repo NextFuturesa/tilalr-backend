@@ -432,12 +432,15 @@ class OtpService
      */
     protected function sendSms(string $phone, string $code, string $type): bool
     {
+        $appUrl = config('app.url', 'https://tilalr.com');
+        $domain = parse_url($appUrl, PHP_URL_HOST) ?? $appUrl;
+
         $messages = [
-            'register' => "Your verification code is: {$code}",
-            'login' => "Your login code is: {$code}",
+            'register' => "Your verification code is: {$code}\nfor {$domain}",
+            'login' => "Your login code is: {$code}\nfor {$domain}",
         ];
 
-        $message = $messages[$type] ?? "Your verification code is: {$code}";
+        $message = $messages[$type] ?? "Your verification code is: {$code}\nfor {$domain}";
 
         if ($this->mode === 'sms') {
             // Full SMS mode - actually send via SMS provider

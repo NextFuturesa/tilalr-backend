@@ -10,7 +10,7 @@ class IslandDestinationSeeder extends Seeder
 {
     /**
      * Run the database seeds.
-     * 
+     *
      * Single seeder that handles both local and international destinations
      * based on the 'type' field condition.
      */
@@ -53,7 +53,7 @@ class IslandDestinationSeeder extends Seeder
                 'groupSize_ar' => '2-4 أشخاص',
                 'features_en' => json_encode(['Diving', 'Photography', 'Relaxation']),
                 'features_ar' => json_encode(['الغوص', 'التصوير الفوتوغرافي', 'الاسترخاء']),
-                'image' => 'islands/local-umluj.jpg',
+                'image' => 'international/5.webp',
                 'price' => 99.00,
                 'rating' => 4.3,
                 'slug' => 'local-island-umluj',
@@ -73,7 +73,7 @@ class IslandDestinationSeeder extends Seeder
                 'groupSize_ar' => '2-5 أشخاص',
                 'features_en' => json_encode(['Fishing', 'Beach', 'Water Sports']),
                 'features_ar' => json_encode(['صيد السمك', 'الشاطئ', 'الرياضات المائية']),
-                'image' => 'islands/local-al-lith.jpg',
+                'image' => 'international/4.webp',
                 'price' => 99.00,
                 'rating' => 4.1,
                 'slug' => 'local-island-al-lith',
@@ -95,7 +95,7 @@ class IslandDestinationSeeder extends Seeder
                 'groupSize_ar' => '٢-٤ أشخاص',
                 'features_en' => json_encode(['Water Sports', 'Spa & Wellness', 'Fine Dining', 'Snorkeling']),
                 'features_ar' => json_encode(['ألعاب مائية', 'سبا وعافية', 'تناول طعام فاخر', 'الغطس بالأنابيب']),
-                'image' => 'islands/maldives.jpg',
+                'image' => 'international/1.webp',
                 'price' => 2500.00,
                 'rating' => 4.8,
                 'slug' => 'maldives-paradise',
@@ -115,7 +115,7 @@ class IslandDestinationSeeder extends Seeder
                 'groupSize_ar' => '٢-٦ أشخاص',
                 'features_en' => json_encode(['Temple Tours', 'Yoga Retreat', 'Beach Club', 'Cultural Immersion']),
                 'features_ar' => json_encode(['جولات معابد', 'انسحاب يوجا', 'ناد شاطئي', 'الانغماس الثقافي']),
-                'image' => 'islands/bali.jpg',
+                'image' => 'international/2.webp',
                 'price' => 1800.00,
                 'rating' => 4.7,
                 'slug' => 'bali-escape',
@@ -135,7 +135,7 @@ class IslandDestinationSeeder extends Seeder
                 'groupSize_ar' => '٢-٤ أشخاص',
                 'features_en' => json_encode(['Diving', 'Private Beach', 'Sunset Cruises', 'Wildlife Tours']),
                 'features_ar' => json_encode(['الغوص', 'شاطئ خاص', 'رحلات الغروب', 'جولات الحياة البرية']),
-                'image' => 'islands/seychelles.jpg',
+                'image' => 'international/3.webp',
                 'price' => 3200.00,
                 'rating' => 4.9,
                 'slug' => 'seychelles-luxury',
@@ -156,7 +156,7 @@ class IslandDestinationSeeder extends Seeder
         // Log seeding completion
         $localCount = IslandDestination::where('type', 'local')->count();
         $internationalCount = IslandDestination::where('type', 'international')->count();
-        
+
         echo "✅ Island Destinations Seeded Successfully!\n";
         echo "   Local: {$localCount} | International: {$internationalCount}\n";
     }

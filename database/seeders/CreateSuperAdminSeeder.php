@@ -18,7 +18,7 @@ class CreateSuperAdminSeeder extends Seeder
         if ($existingByEmail) {
             $existingByEmail->update([
                 'name' => 'Super Admin',
-                'password' => Hash::make($password),
+                'password' => $password,
                 'is_admin' => true,
             ]);
 
@@ -35,7 +35,7 @@ class CreateSuperAdminSeeder extends Seeder
             $currentAdmin->update([
                 'email' => $email,
                 'name' => 'Super Admin',
-                'password' => Hash::make($password),
+                'password' => $password,
             ]);
 
             // Demote any other admins (shouldn't be necessary but keep it safe)
@@ -49,7 +49,7 @@ class CreateSuperAdminSeeder extends Seeder
         $user = User::create([
             'name' => 'Super Admin',
             'email' => $email,
-            'password' => Hash::make($password),
+            'password' => $password,
             'is_admin' => true,
         ]);
 

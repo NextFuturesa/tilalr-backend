@@ -53,6 +53,7 @@ class CustomPaymentOfferController extends Controller
                 'message' => 'Payment offer created successfully',
                 'data' => [
                     'id' => $offer->id,
+                    'token_number' => $offer->token_number,
                     'customer_name' => $offer->customer_name,
                     'customer_email' => $offer->customer_email,
                     'customer_phone' => $offer->customer_phone,
@@ -105,6 +106,7 @@ class CustomPaymentOfferController extends Controller
                 'data' => $offers->map(function ($offer) {
                     return [
                         'id' => $offer->id,
+                        'token_number' => $offer->token_number,
                         'customer_name' => $offer->customer_name,
                         'customer_email' => $offer->customer_email,
                         'customer_phone' => $offer->customer_phone,
@@ -147,6 +149,7 @@ class CustomPaymentOfferController extends Controller
                 return response()->json([
                     'success' => true,
                     'data' => [
+                        'token_number' => $offer->token_number,
                         'customer_name' => $offer->customer_name,
                         'amount' => (float) $offer->amount,
                         'description' => $offer->description,
@@ -160,6 +163,7 @@ class CustomPaymentOfferController extends Controller
             return response()->json([
                 'success' => true,
                 'data' => [
+                    'token_number' => $offer->token_number,
                     'customer_name' => $offer->customer_name,
                     'customer_email' => $this->maskEmail($offer->customer_email),
                     'customer_phone' => $this->maskPhone($offer->customer_phone),

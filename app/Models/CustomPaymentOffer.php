@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 class CustomPaymentOffer extends Model
 {
     protected $fillable = [
+        'token_number',
         'customer_name',
         'customer_email',
         'customer_phone',
@@ -39,11 +40,36 @@ class CustomPaymentOffer extends Model
                 $model->unique_link = static::generateUniqueLink();
             }
             
+            // Generate token number if not provided
+            if (empty($model->token_number)) {
+                $model->token_number = static::generateTokenNumber();
+            }
+            
             // Set default status
             if (empty($model->payment_status)) {
                 $model->payment_status = 'pending';
             }
         });
+    }
+
+    /**
+     * Generate a unique token number like "CPO-2026-0001"
+     */
+    public static function generateTokenNumber(): string
+    {
+        $year = date('Y');
+        $lastOffer = static::whereYear('created_at', $year)
+            ->whereNotNull('token_number')
+            ->orderBy('id', 'desc')
+            ->first();
+
+        if ($lastOffer && preg_match('/CPO-' . $year . '-(\d+)/', $lastOffer->token_number, $matches)) {
+            $nextNumber = intval($matches[1]) + 1;
+        } else {
+            $nextNumber = 1;
+        }
+
+        return sprintf('CPO-%s-%04d', $year, $nextNumber);
     }
 
     /**
