@@ -33,18 +33,17 @@ class IslandDestinationController extends Controller
                     if (preg_match('/^https?:\/\//', $imagePath)) {
                         $d->image = $imagePath;
                     }
+                    // Check if it's islands/ or international/ path (stored directly in public/)
+                    elseif (str_starts_with($imagePath, 'islands/') || str_starts_with($imagePath, 'international/')) {
+                        $d->image = asset($imagePath);
+                    }
                     // Check if it's already a full storage path
                     elseif (str_starts_with($imagePath, 'storage/') || str_starts_with($imagePath, '/storage/')) {
                         $d->image = asset($imagePath);
                     }
-                    // Check if it's islands/ path - Filament stores as "islands/filename.jpg"
-                    // The actual file is in storage/app/public/islands/ -> symlinked to public/storage/islands/
-                    elseif (str_starts_with($imagePath, 'islands/')) {
-                        $d->image = asset('storage/' . $imagePath);
-                    }
-                    // Otherwise treat as storage path
+                    // Otherwise treat as public path
                     else {
-                        $d->image = asset('storage/' . $imagePath);
+                        $d->image = asset($imagePath);
                     }
                 } else {
                     $d->image = null;
@@ -105,18 +104,17 @@ class IslandDestinationController extends Controller
                 if (preg_match('/^https?:\/\//', $imagePath)) {
                     $destination->image = $imagePath;
                 }
+                // Check if it's islands/ or international/ path (stored directly in public/)
+                elseif (str_starts_with($imagePath, 'islands/') || str_starts_with($imagePath, 'international/')) {
+                    $destination->image = asset($imagePath);
+                }
                 // Check if it's already a full storage path
                 elseif (str_starts_with($imagePath, 'storage/') || str_starts_with($imagePath, '/storage/')) {
                     $destination->image = asset($imagePath);
                 }
-                // Check if it's islands/ path - Filament stores as "islands/filename.jpg"
-                // The actual file is in storage/app/public/islands/ -> symlinked to public/storage/islands/
-                elseif (str_starts_with($imagePath, 'islands/')) {
-                    $destination->image = asset('storage/' . $imagePath);
-                }
-                // Otherwise treat as storage path
+                // Otherwise treat as public path
                 else {
-                    $destination->image = asset('storage/' . $imagePath);
+                    $destination->image = asset($imagePath);
                 }
             } else {
                 $destination->image = null;

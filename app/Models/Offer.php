@@ -27,4 +27,35 @@ class Offer extends Model
         'price_en' => 'decimal:2',
         'price_ar' => 'decimal:2',
     ];
+
+    /**
+     * Get the full image URL for the offer
+     */
+    public function getImageAttribute($value)
+    {
+        if (!$value) {
+            return null;
+        }
+
+        // Normalize the image path
+        $imagePath = ltrim($value, '/');
+
+        // Check if already absolute URL
+        if (preg_match('/^https?:\/\//', $imagePath)) {
+            return $imagePath;
+        }
+
+        // Check if it's already a full storage path
+        if (str_starts_with($imagePath, 'storage/') || str_starts_with($imagePath, '/storage/')) {
+            return asset($imagePath);
+        }
+
+        // Check if it's islands/ path
+        if (str_starts_with($imagePath, 'islands/')) {
+            return asset('storage/' . $imagePath);
+        }
+
+        // Otherwise treat as storage path
+        return asset('storage/' . $imagePath);
+    }
 }

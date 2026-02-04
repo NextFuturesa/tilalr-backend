@@ -1,9 +1,9 @@
 <?php
 
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Role extends Model
@@ -26,6 +26,7 @@ class Role extends Model
     ];
 
     /**
+<<<<<<< HEAD
      * Relationship: Role has many users
      */
     public function users(): BelongsToMany
@@ -35,7 +36,11 @@ class Role extends Model
     }
 
     /**
+<<<<<<< Updated upstream
      * Relationship: Role has many permissions
+=======
+     * Relationship: Role belongs to many permissions
+>>>>>>> Stashed changes
      */
     public function permissions(): BelongsToMany
     {
@@ -44,55 +49,18 @@ class Role extends Model
     }
 
     /**
-     * Check if role has permission
+     * Check if role has a specific permission
      */
-    public function hasPermission($permission): bool
+    public function hasPermission(string $permission): bool
     {
-        if (is_string($permission)) {
-            $permission = Permission::where('name', $permission)->first();
-        }
-        return $this->permissions()->where('permissions.id', $permission->id)->exists();
+        return $this->permissions()->where('name', $permission)->exists();
     }
 
     /**
-     * Get the title based on current locale (legacy)
+     * Check if role has any of the given permissions
      */
-    public function getTitleAttribute()
+    public function hasAnyPermission(array $permissions): bool
     {
-        $locale = app()->getLocale();
-        return $this->{"title_{$locale}"};
-    }
-
-    /**
-     * Get the description based on current locale
-     */
-    public function getDescriptionAttribute()
-    {
-        $locale = app()->getLocale();
-        return $this->{"description_{$locale}"};
-    }
-
-    /**
-     * Get team members for this role
-     */
-    public function teamMembers(): HasMany
-    {
-        return $this->hasMany(TeamMember::class);
-    }
-
-    /**
-     * Scope to get active roles
-     */
-    public function scopeActive($query)
-    {
-        return $query->where('is_active', true);
-    }
-
-    /**
-     * Scope to order by sort order
-     */
-    public function scopeOrdered($query)
-    {
-        return $query->orderBy('sort_order')->orderBy('title_en');
+        return $this->permissions()->whereIn('name', $permissions)->exists();
     }
 }

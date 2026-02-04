@@ -21,7 +21,7 @@ class TestUsersSeeder extends Seeder
             ['email' => 'executive@tilalr.com'],
             [
                 'name' => 'Executive Manager',
-                'password' => Hash::make('password123'),
+                'password' => 'password123',
                 'is_admin' => true,
             ]
         );
@@ -34,7 +34,7 @@ class TestUsersSeeder extends Seeder
             ['email' => 'consultant@tilalr.com'],
             [
                 'name' => 'Consultant',
-                'password' => Hash::make('password123'),
+                'password' => 'password123',
                 'is_admin' => true,
             ]
         );
@@ -42,16 +42,17 @@ class TestUsersSeeder extends Seeder
             $consultant->roles()->sync([$consultantRole->id]);
         }
 
-        // Super Admin user - has access to EVERYTHING
-        $superAdmin = User::updateOrCreate(
-            ['email' => 'superadmin@tilalr.com'],
-            [
+        // Super Admin user - Skip if already exists (created by CreateSuperAdminSeeder)
+        $superAdmin = User::where('email', 'superadmin@tilalr.com')->first();
+        if (!$superAdmin) {
+            $superAdmin = User::create([
+                'email' => 'superadmin@tilalr.com',
                 'name' => 'Super Admin',
-                'password' => Hash::make('password123'),
+                'password' => 'superadmin123',
                 'is_admin' => true,
-            ]
-        );
-        if ($superAdminRole) {
+            ]);
+        }
+        if ($superAdminRole && $superAdmin) {
             $superAdmin->roles()->sync([$superAdminRole->id]);
         }
 

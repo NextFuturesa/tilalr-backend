@@ -224,7 +224,7 @@ class PaymentController extends Controller
             'amount' => $amountInHalalas, // Amount in halalas
             'currency' => 'SAR', // Saudi Riyals
             'description' => 'دفع حجز - ' . ($booking->trip_slug ?? 'حجز'),
-            'callback_url' => config('app.frontend_url') . '/payment-callback',
+            'callback_url' => config('app.frontend_url') . '/ar/payment-callback',
             'methods' => $methods,
             'metadata' => [
                 'booking_id' => $booking->id,
@@ -484,7 +484,7 @@ class PaymentController extends Controller
             'amount' => $testAmount * 100, // Convert to halalas
             'currency' => 'SAR',
             'description' => 'دفع تجريبي',
-            'callback_url' => config('app.frontend_url') . '/payment-callback',
+            'callback_url' => config('app.frontend_url') . '/ar/payment-callback',
             'methods' => ['creditcard', 'stcpay'], // Apple Pay disabled
             'language' => 'ar',
             'metadata' => [

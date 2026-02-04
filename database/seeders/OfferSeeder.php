@@ -12,11 +12,11 @@ class OfferSeeder extends Seeder
     {
         // Clear existing offers
         DB::table('offers')->truncate();
-        
+
         $offers = [
             [
                 'slug' => 'alula-day-trip',
-                'image' => '/354.jpeg',
+                'image' => '/islands/354.jpeg',
                 'title_en' => 'AlUla Day Trip',
                 'title_ar' => 'رحلة العلا يوم واحد',
                 'description_en' => 'A full-day AlUla tour visiting natural and heritage highlights with lunch in nature.',
@@ -37,7 +37,7 @@ class OfferSeeder extends Seeder
             ],
             [
                 'slug' => 'alula-two-days',
-                'image' => '/1800.jpeg',
+                'image' => '/islands/1800.jpeg',
                 'title_en' => 'Two-Day AlUla Overnight',
                 'title_ar' => 'رحلة مبيت يومين للعلا',
                 'description_en' => 'A two-day AlUla overnight experience covering key heritage sites, farm stay, and Hegra visit.',
@@ -58,7 +58,7 @@ class OfferSeeder extends Seeder
             ],
             [
                 'slug' => 'alula-three-days',
-                'image' => '/3200.jpeg',
+                'image' => '/islands/3200.jpeg',
                 'title_en' => 'Three Days AlUla Experience',
                 'title_ar' => 'رحلة مبيت ٣ أيام العلا',
                 'description_en' => 'A three-day AlUla program featuring camps, guided archaeological tours, and cultural experiences.',

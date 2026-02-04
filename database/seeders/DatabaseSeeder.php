@@ -17,9 +17,10 @@ class DatabaseSeeder extends Seeder
         $this->call([
             ContactInfoSeeder::class,
             TrainingSeeder::class,
-            AdminSeeder::class,
+            CreateSuperAdminSeeder::class,
             // RBAC system - roles and permissions
             \Database\Seeders\RolePermissionSeeder::class,
+            \Database\Seeders\PermissionSeeder::class,
             \Database\Seeders\CreateCustomPaymentOfferPermissionsSeeder::class,
             \Database\Seeders\TestUsersSeeder::class,
             // Seed offers and international demo data
