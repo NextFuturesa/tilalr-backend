@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
@@ -16,6 +15,7 @@ class Role extends Model
         'title_ar', // legacy
         'description_en', // legacy
         'description_ar', // legacy
+        'allowed_modules',
         'is_active',
         'sort_order',
     ];
@@ -23,10 +23,10 @@ class Role extends Model
     protected $casts = [
         'is_active' => 'boolean',
         'sort_order' => 'integer',
+        'allowed_modules' => 'array',
     ];
 
     /**
-<<<<<<< HEAD
      * Relationship: Role has many users
      */
     public function users(): BelongsToMany
@@ -36,11 +36,7 @@ class Role extends Model
     }
 
     /**
-<<<<<<< Updated upstream
      * Relationship: Role has many permissions
-=======
-     * Relationship: Role belongs to many permissions
->>>>>>> Stashed changes
      */
     public function permissions(): BelongsToMany
     {
