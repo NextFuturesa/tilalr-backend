@@ -43,6 +43,7 @@ class IslandDestinationsLocalSeeder extends Seeder
             'active' => true,
             'highlights_en' => json_encode(['Hegra Visit', 'Desert Camping', 'Star Gazing', 'Historical Sites']),
             'highlights_ar' => json_encode(['زيارة الحجر', 'التخييم الصحراوي', 'مراقبة النجوم', 'المواقع التاريخية']),
+            'highlights_zh' => json_encode(['参观赫格拉', '沙漠露营', '观星', '历史遗址']),
             'features' => json_encode([
                 'All transportation',
                 'Professional guide',
@@ -56,6 +57,13 @@ class IslandDestinationsLocalSeeder extends Seeder
                 'سفاري صحراوي',
                 'تجربة التخييم',
                 'جميع الوجبات مشمولة',
+            ]),
+            'features_zh' => json_encode([
+                '往返接送',
+                '专业导游',
+                '沙漠越野',
+                '露营体验',
+                '提供所有餐食',
             ]),
             'includes_en' => json_encode([
                 'Round-trip transportation from Al-Madinah',
@@ -72,6 +80,14 @@ class IslandDestinationsLocalSeeder extends Seeder
                 'تجربة التخييم الصحراوي',
                 'رسوم الفعاليات والمواقع',
                 'دعم لوجستي للمجموعة',
+            ]),
+            'includes_zh' => json_encode([
+                '从麦地那往返接送',
+                '考古景点的认证导游',
+                '包含所有正餐（晚餐、早餐、午餐）',
+                '沙漠露营体验',
+                '活动与景点门票',
+                '团队的后勤支持',
             ]),
             'itinerary_en' => 'AlUla Day Trip — Starting Point: Al-Madinah
 
@@ -132,6 +148,7 @@ Old Town
 • التسوق من المتاجر المحلية وتجربة القهوة والضيافة والاستمتاع بالفنون المصاحبه.
 
 🕚 11:00 مساءً – العودة إلى المدينة المنورة',
+            'itinerary_zh' => '阿拉一日游 — 出发点：麦地那\n\n⏰ 行程时间：08:00 – 23:00\n\n🕗 08:00 从麦地那出发，乘坐舒适巴士\n• 集合出发，沿途欣赏风景。\n\n中午\n抵达阿拉并前往Shabtraz农场野餐午餐\n• 在农场休闲参观并体验度假活动。\n\n下午\nAl‑Maraya剧场（视情况而定）\n• 外观参观建筑地标并拍照留念。\n\n傍晚\n大象岩（Elephant Rock）\n• 停留拍照与观赏自然景观。\n\n老城\n• 漫步老城历史巷道，体验地方手工与咖啡。\n\n🕚 23:00 返回麦地那'
         ]);
 
         // ============================================
@@ -158,6 +175,7 @@ Old Town
             'active' => true,
             'highlights_en' => json_encode(['Heritage Sites', 'Desert Camping', 'Ancient Tombs', 'Bedouin Culture']),
             'highlights_ar' => json_encode(['المواقع التراثية', 'التخييم الصحراوي', 'القبور القديمة', 'الثقافة البدوية']),
+            'highlights_zh' => json_encode(['文化遗址', '沙漠露营', '古墓', '贝都因文化']),
             'features' => json_encode([
                 'Luxury desert lodge',
                 'All meals & snacks',
@@ -173,6 +191,14 @@ Old Town
                 'مرشد احترافي',
                 'أنشطة صحراوية',
                 'خدمة التصوير',
+            ]),
+            'features_zh' => json_encode([
+                '豪华沙漠小屋',
+                '包含所有餐点及零食',
+                '贝都因文化体验',
+                '专业导游',
+                '沙漠活动',
+                '摄影服务',
             ]),
             'includes_en' => json_encode([
                 'Round-trip transportation from Al-Madinah',
@@ -197,6 +223,18 @@ Old Town
                 'خدمة التصوير الاحترافي',
                 'أنشطة سفاري صحراوي',
                 'تغطية التأمين',
+            ]),
+            'includes_zh' => json_encode([
+                '从麦地那往返接送',
+                '豪华沙漠小屋住宿',
+                '专业导游服务',
+                '包含所有餐点及优质点心',
+                '贝都因文化体验',
+                '访问赫格拉（UNESCO）',
+                '参观Al‑Maraya 剧场',
+                '专业摄影服务',
+                '沙漠越野活动',
+                '保险覆盖',
             ]),
             'itinerary_en' => 'Two-Day AlUla Overnight — Day One
 • 08:00 AM – Departure from Al-Madinah (meeting and departure by comfortable coach)
@@ -231,6 +269,7 @@ Day Two • Hegra & Return
 
 03:00 PM — Depart AlUla for Al-Madinah
 06:30–07:00 PM — Arrival and trip closure',
+            'itinerary_zh' => '两日阿拉体验 — 第一天\n• 08:00 从麦地那出发（乘坐舒适大巴，约3–4小时车程）\n\n— 抵达阿拉并前往Shabtraz农场用午餐并办理入住\n\n下午\n— 参观Al‑Maraya剧场（视情况而定）并拍照\n\n傍晚\n— 参观大象岩并拍照\n\n晚间\n— 老城漫步及本地体验\n\n第二天 • 赫格拉参观并返回\n• 早晨在营地享用早餐并进行短途探险\n• 参观赫格拉（Mada\'in Saleh）\n• 午后返回并于15:00出发返回麦地那',
             'itinerary_ar' => 'رحلة مبيت يومين للعلا
 اليوم الأول — الوصول إلى العلا واكتشاف الأيقونات
 
@@ -308,6 +347,7 @@ Day Two • Hegra & Return
             'active' => true,
             'highlights_en' => json_encode(['Ancient Heritage Sites', 'Desert Camping', 'Star Gazing', 'Bedouin Culture']),
             'highlights_ar' => json_encode(['المواقع التراثية القديمة', 'التخييم الصحراوي', 'مراقبة النجوم', 'الثقافة البدوية']),
+            'highlights_zh' => json_encode(['古代遗址', '沙漠露营', '观星', '贝都因文化']),
             'features' => json_encode([
                 'Luxury desert lodge',
                 'Expert guides',
@@ -323,6 +363,14 @@ Day Two • Hegra & Return
                 'تخييم صحراوي',
                 'مراقبة النجوم',
                 'تجارب ثقافية',
+            ]),
+            'features_zh' => json_encode([
+                '豪华沙漠小屋',
+                '资深导游',
+                '包含餐食',
+                '沙漠露营',
+                '观星活动',
+                '文化体验',
             ]),
             'includes_en' => json_encode([
                 'Round-trip transportation from Al-Madinah',
@@ -345,6 +393,17 @@ Day Two • Hegra & Return
                 'زيارة مسرح مرايا',
                 'خدمة التصوير الاحترافي',
                 'تغطية التأمين',
+            ]),
+            'includes_zh' => json_encode([
+                '从麦地那往返接送',
+                '豪华沙漠小屋住宿',
+                '考古学家级别导游服务',
+                '包含所有餐食及优质点心',
+                '沙漠露营体验',
+                '赫格拉（联合国教科文组织）门票',
+                '参观Al‑Maraya剧场',
+                '专业摄影服务',
+                '保险覆盖',
             ]),
             'itinerary_en' => 'Three Days in AlUla — Starting point: pickup at train station or airport; depart from Al-Madinah or meet at AlUla Airport
 Duration: 3 days / 2 nights
@@ -378,6 +437,7 @@ Accommodation: camps and rural farms
 • 09:30 AM – Head to natural experiences: dune driving or Wadi al-Naam
 • 12:00 PM – Return to accommodation and check out
 • 01:00 PM – Depart for Al-Madinah',
+            'itinerary_zh' => '三日阿拉之旅 — 行程要点：接送点为火车站或机场，或从麦地那出发\n\n— 第一天\n• 11:00 在麦地那集合并出发\n• 15:00 抵达阿拉，办理入住并用午餐\n• 18:00 参观大象岩并拍照\n• 20:00 前往Shabtraz农场：特色晚餐与观星活动\n\n— 第二天\n• 上午参观赫格拉等遗址与Al‑Maraya剧场\n\n— 第三天\n• 自然体验（沙丘驾驶/瓦迪）并返回，结束行程',
             'itinerary_ar' => 'رحلة مبيت ٣ ايام العلا 3 أيام في العلا
 
 📍 نقطة الانطلاق: الاستقبال في محطة القطار او المطار والانطلاق من المدينة المنورة او الاستقبال في مطار العلا
