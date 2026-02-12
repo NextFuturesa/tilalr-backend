@@ -45,7 +45,9 @@ class ContactMessageResource extends Resource
                 TextColumn::make('phone'),
                 TextColumn::make('subject'),
                 TextColumn::make('message')->limit(40),
-                TextColumn::make('created_at')->dateTime('M d, Y H:i'),
+                TextColumn::make('created_at')
+                    ->formatStateUsing(fn($state) => \Carbon\Carbon::parse($state)->setTimezone('Asia/Riyadh')->format('M d, Y H:i'))
+                    ->sortable(),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
