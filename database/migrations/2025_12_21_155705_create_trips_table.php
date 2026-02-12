@@ -22,7 +22,8 @@ return new class extends Migration
             $table->string('image')->nullable();
             $table->json('images')->nullable();
             $table->string('type')->nullable();
-            $table->foreignId('city_id')->nullable()->constrained()->onDelete('set null');
+            // column only — foreign key is added by 2026_01_15_100001_add_city_id_foreign_to_trips.php
+            $table->unsignedBigInteger('city_id')->nullable();
             $table->date('start_date')->nullable();
             $table->date('end_date')->nullable();
             $table->integer('order')->default(0);

@@ -11,8 +11,9 @@ return new class extends Migration
         if (!Schema::hasTable('permission_role')) {
             Schema::create('permission_role', function (Blueprint $table) {
                 $table->id();
-                $table->foreignId('permission_id')->constrained()->onDelete('cascade');
-                $table->foreignId('role_id')->constrained()->onDelete('cascade');
+                // create columns only; foreign keys are added in a later migration to avoid duplicate-constraint errors
+                $table->unsignedBigInteger('permission_id');
+                $table->unsignedBigInteger('role_id');
                 $table->timestamps();
                 $table->unique(['permission_id', 'role_id']);
             });
