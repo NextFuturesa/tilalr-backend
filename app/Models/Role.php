@@ -18,11 +18,13 @@ class Role extends Model
         'description_ar', // legacy
         'is_active',
         'sort_order',
+        'allowed_modules',
     ];
 
     protected $casts = [
         'is_active' => 'boolean',
         'sort_order' => 'integer',
+        'allowed_modules' => 'json',
     ];
 
     /**

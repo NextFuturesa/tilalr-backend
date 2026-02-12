@@ -14,7 +14,7 @@ return [
     | This is useful for development and testing without SMS integration.
     |
     */
-    'fixed_code' => env('OTP_FIXED_CODE', '1234'),
+    'fixed_code' => env('OTP_FIXED_CODE', '123456'),
 
     /*
     |--------------------------------------------------------------------------

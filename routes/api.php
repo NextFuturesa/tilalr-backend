@@ -1,5 +1,4 @@
 <?php
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PageController;
@@ -22,20 +21,17 @@ use App\Http\Controllers\Api\TestDataController;
 use App\Http\Controllers\Api\IslandDestinationController;
 use App\Http\Controllers\Api\CustomPaymentOfferController;
 
-// Health check routes
+Route::get('/test', function () {
+    return response()->json(['status' => 'ok', 'message' => 'API routing works!']);
+});
+
 Route::get('/health', [HealthController::class, 'check']);
 Route::get('/health/db', [HealthController::class, 'dbTest']);
-
-// Test data routes (Development only - remove in production)
 Route::post('/test-data/create-users', [TestDataController::class, 'createTestUsers']);
-
-// Authentication routes
 Route::post('/register', [AuthController::class, 'register']);
-// Check if an email is already registered (used by frontend for instant validation)
 Route::get('/users/exists', [AuthController::class, 'emailExists']);
 Route::post('/login', [AuthController::class, 'login']);
 
-// OTP endpoints
 Route::post('/auth/send-otp', [\App\Http\Controllers\Api\OtpController::class, 'send']);
 Route::post('/auth/verify-otp', [\App\Http\Controllers\Api\OtpController::class, 'verify']);
 // Password reset via OTP
@@ -88,6 +84,9 @@ Route::get('/international/packages', [InternationalPackageController::class, 'i
 Route::get('/international/packages/{id}', [InternationalPackageController::class, 'show']);
 
 Route::get('/international/destinations', [InternationalDestinationController::class, 'index']);
+Route::get('/international/destinations/countries', [InternationalDestinationController::class, 'countries']);
+Route::get('/international/destinations/cities', [InternationalDestinationController::class, 'cities']);
+Route::get('/international/destinations/filter', [InternationalDestinationController::class, 'filter']);
 
 // Public Offers API
 Route::get('/offers', [\App\Http\Controllers\Api\OfferController::class, 'index']);
@@ -158,26 +157,18 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/admin/island-destinations/local', [IslandDestinationController::class, 'storeLocal']);
 });
 
-// Payment webhooks (public for payment gateway callbacks)
 Route::post('/payments/webhook/telr', [PaymentController::class, 'telrWebhook']);
 Route::post('/payments/webhook/moyasar', [PaymentController::class, 'moyasarWebhook']);
 Route::get('/payments/callback', [PaymentController::class, 'callback']);
 
-// Booking & Payment public endpoints (for guest bookings if needed)
 Route::post('/bookings/guest', [BookingController::class, 'guestStore']);
 Route::get('/bookings/{id}/status', [BookingController::class, 'checkStatus']);
 
-// ============================================
-// RESERVATION SYSTEM (Phase 1 - No Auth Required)
-// ============================================
-// Public reservation endpoints - anyone can submit without login
 Route::post('/reservations', [ReservationController::class, 'store']); // Submit reservation
 Route::post('/reservations/check-status', [ReservationController::class, 'checkStatus']); // Check status by email + ID
 
-// Contact form submission (public)
 Route::post('/contact', [App\Http\Controllers\Api\ContactController::class, 'store']);
 
-// Admin routes (protected - add authentication later)
 Route::prefix('admin')->group(function () {
     Route::post('/pages', [PageController::class, 'store']);
     Route::put('/pages/{id}', [PageController::class, 'update']);
@@ -225,10 +216,6 @@ Route::prefix('admin')->group(function () {
     Route::delete('/custom-payment-offers/{id}', [CustomPaymentOfferController::class, 'delete']);
 });
 
-// ============================================
-// CUSTOM PAYMENT OFFERS (Public Routes)
-// ============================================
-// Customer payment page - fetch offer details
 Route::get('/custom-payment-offers/{uniqueLink}', [CustomPaymentOfferController::class, 'show']);
 
 // Payment callbacks (from Moyasar)

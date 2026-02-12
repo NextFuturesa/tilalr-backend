@@ -10,22 +10,25 @@ class Offer extends Model
     use HasFactory;
 
     protected $fillable = [
-        'slug','image','title_en','title_ar','description_en','description_ar','duration',
-        'duration_en','duration_ar','location_en','location_ar','group_size','group_size_en','group_size_ar',
-        'discount','price','price_en','price_ar','badge','badge_en','badge_ar','features','features_en','features_ar','highlights','highlights_en','highlights_ar','is_active'
+        'slug','image','title_en','title_ar','title_zh','description_en','description_ar','description_zh','duration',
+        'duration_en','duration_ar','duration_zh','location_en','location_ar','location_zh','group_size','group_size_en','group_size_ar','group_size_zh',
+        'discount','price','price_en','price_ar','price_zh','badge','badge_en','badge_ar','badge_zh','features','features_en','features_ar','features_zh','highlights','highlights_en','highlights_ar','highlights_zh','is_active'
     ];
 
     protected $casts = [
         'features' => 'array',
         'features_en' => 'array',
         'features_ar' => 'array',
+        'features_zh' => 'array',
         'highlights' => 'array',
         'highlights_en' => 'array',
         'highlights_ar' => 'array',
+        'highlights_zh' => 'array',
         'is_active' => 'boolean',
         'price' => 'decimal:2',
         'price_en' => 'decimal:2',
         'price_ar' => 'decimal:2',
+        'price_zh' => 'decimal:2',
     ];
 
     /**

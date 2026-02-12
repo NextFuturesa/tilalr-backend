@@ -66,6 +66,8 @@ class IslandDestinationResource extends Resource
                             ->required()
                             ->label('Title (Arabic)')
                             ->extraAttributes(['dir' => 'rtl']),
+                        Forms\Components\TextInput::make('title_zh')
+                            ->label('Title (Chinese)'),
                         
                         Forms\Components\Hidden::make('type')
                             ->default('local'),
@@ -80,11 +82,16 @@ class IslandDestinationResource extends Resource
                             ->label('Description (Arabic)')
                             ->rows(3)
                             ->extraAttributes(['dir' => 'rtl']),
+                        Forms\Components\Textarea::make('description_zh')
+                            ->label('Description (Chinese)')
+                            ->rows(3),
                         Forms\Components\TextInput::make('location_en')
                             ->label('Location (English)'),
                         Forms\Components\TextInput::make('location_ar')
                             ->label('Location (Arabic)')
                             ->extraAttributes(['dir' => 'rtl']),
+                        Forms\Components\TextInput::make('location_zh')
+                            ->label('Location (Chinese)'),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Duration & Group Size')
@@ -94,11 +101,15 @@ class IslandDestinationResource extends Resource
                         Forms\Components\TextInput::make('duration_ar')
                             ->label('Duration (Arabic)')
                             ->extraAttributes(['dir' => 'rtl']),
+                        Forms\Components\TextInput::make('duration_zh')
+                            ->label('Duration (Chinese)'),
                         Forms\Components\TextInput::make('groupSize_en')
                             ->label('Group Size (English)'),
                         Forms\Components\TextInput::make('groupSize_ar')
                             ->label('Group Size (Arabic)')
                             ->extraAttributes(['dir' => 'rtl']),
+                        Forms\Components\TextInput::make('groupSize_zh')
+                            ->label('Group Size (Chinese)'),
                     ])->columns(2),
 
                 Forms\Components\Section::make('Features')
@@ -110,7 +121,10 @@ class IslandDestinationResource extends Resource
                             ->label('Features (Arabic)')
                             ->placeholder('أدخل الميزات واضغط Enter')
                             ->extraAttributes(['dir' => 'rtl']),
-                    ])->columns(2),
+                        Forms\Components\TagsInput::make('features_zh')
+                            ->label('Features (Chinese)')
+                            ->placeholder('Enter features and press Enter'),
+                    ])->columns(3),
 
                 Forms\Components\Section::make('Highlights')
                     ->schema([
@@ -121,7 +135,10 @@ class IslandDestinationResource extends Resource
                             ->label('Highlights (Arabic)')
                             ->placeholder('أدخل أبرز النقاط واضغط Enter')
                             ->extraAttributes(['dir' => 'rtl']),
-                    ])->columns(2),
+                        Forms\Components\TagsInput::make('highlights_zh')
+                            ->label('Highlights (Chinese)')
+                            ->placeholder('Enter highlights and press Enter'),
+                    ])->columns(3),
 
                 Forms\Components\Section::make("What's Included")
                     ->schema([
@@ -132,7 +149,10 @@ class IslandDestinationResource extends Resource
                             ->label('Includes (Arabic)')
                             ->placeholder('أدخل ما يشمله البرنامج واضغط Enter')
                             ->extraAttributes(['dir' => 'rtl']),
-                    ])->columns(2),
+                        Forms\Components\TagsInput::make('includes_zh')
+                            ->label('Includes (Chinese)')
+                            ->placeholder('Enter what is included and press Enter'),
+                    ])->columns(3),
 
                 Forms\Components\Section::make('Itinerary / Schedule')
                     ->schema([
@@ -145,7 +165,11 @@ class IslandDestinationResource extends Resource
                             ->placeholder('أدخل جدول الرحلة الكامل...')
                             ->rows(10)
                             ->extraAttributes(['dir' => 'rtl']),
-                    ])->columns(2),
+                        Forms\Components\Textarea::make('itinerary_zh')
+                            ->label('Itinerary (Chinese)')
+                            ->placeholder('Enter the full trip schedule/itinerary...')
+                            ->rows(10),
+                    ])->columns(3),
 
                 Forms\Components\Section::make('Pricing & Rating')
                     ->schema([

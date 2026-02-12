@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Trip extends Model
 {
     protected $fillable = [
-        'title', 'slug', 'description', 'content', 'price', 'duration',
-        'image', 'video', 'images', 'highlights', 'group_size', 'type', 'city_id', 'city_name', 'start_date', 'end_date',
+        'title', 'title_zh', 'slug', 'description', 'description_zh', 'content', 'content_zh', 'price', 'duration',
+        'image', 'video', 'images', 'highlights', 'highlights_zh', 'group_size', 'group_size_zh', 'type', 'city_id', 'city_name', 'city_name_zh', 'start_date', 'end_date',
         'order', 'lang', 'is_active', 'blocked_dates'
     ];
 
@@ -16,6 +16,7 @@ class Trip extends Model
         'is_active' => 'boolean',
         'images' => 'array',
         'highlights' => 'array',
+        'highlights_zh' => 'array',
         'blocked_dates' => 'array',
         'price' => 'decimal:2',
         'start_date' => 'date',

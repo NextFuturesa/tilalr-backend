@@ -54,13 +54,25 @@ class InternationalPackageResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('title_en')->required()->label('Title (EN)'),
                         Forms\Components\TextInput::make('title_ar')->label('Title (AR)'),
+                        Forms\Components\TextInput::make('title_zh')->label('Title (ZH)'),
+                        Forms\Components\TextInput::make('country_en')->label('Country (EN)')
+                            ->helperText('e.g., UAE, Turkey, Thailand'),
+                        Forms\Components\TextInput::make('country_ar')->label('Country (AR)'),
+                        Forms\Components\TextInput::make('country_zh')->label('Country (ZH)'),
+                        Forms\Components\TextInput::make('city_en')->label('City (EN)')
+                            ->helperText('e.g., Dubai, Istanbul, Bangkok'),
+                        Forms\Components\TextInput::make('city_ar')->label('City (AR)'),
+                        Forms\Components\TextInput::make('city_zh')->label('City (ZH)'),
                         Forms\Components\TextInput::make('destination_en')->required()->label('Destination (EN)'),
                         Forms\Components\TextInput::make('destination_ar')->label('Destination (AR)'),
+                        Forms\Components\TextInput::make('destination_zh')->label('Destination (ZH)'),
                         Forms\Components\TextInput::make('duration_en')->label('Duration (EN)'),
                         Forms\Components\TextInput::make('duration_ar')->label('Duration (AR)'),
+                        Forms\Components\TextInput::make('duration_zh')->label('Duration (ZH)'),
                         Forms\Components\TextInput::make('price')->required()->numeric()->label('Price'),
                         Forms\Components\Textarea::make('description_en')->label('Description (EN)'),
                         Forms\Components\Textarea::make('description_ar')->label('Description (AR)'),
+                        Forms\Components\Textarea::make('description_zh')->label('Description (ZH)'),
                         Forms\Components\FileUpload::make('image')->image()->directory('packages')->label('Image'),
                         Forms\Components\Toggle::make('active')->label('Active')->default(true),
                     ])->columns(2),
@@ -72,15 +84,20 @@ class InternationalPackageResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('title_en')->label('Title (EN)')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('destination_en')->label('Destination (EN)')->searchable(),
+                Tables\Columns\TextColumn::make('country_en')->label('Country')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('city_en')->label('City')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('destination_en')->label('Destination')->searchable()->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('price')->label('Price')->money('usd', true),
                 Tables\Columns\IconColumn::make('active')->boolean()->label('Active'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('country_en')
+                    ->label('Country')
+                    ->options(fn () => InternationalPackage::distinct()->pluck('country_en', 'country_en')->filter()->toArray()),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

@@ -99,6 +99,21 @@ class OfferResource extends Resource
                             Forms\Components\TagsInput::make('features_ar')->label(__('admin.form.features_ar'))->placeholder(__('admin.placeholders.add_feature'))->extraAttributes(['dir' => 'rtl']),
                             Forms\Components\TagsInput::make('highlights_ar')->label(__('admin.form.highlights_ar'))->placeholder(__('admin.placeholders.add_highlight'))->extraAttributes(['dir' => 'rtl']),
                         ])->columnSpanFull(),
+
+                    Forms\Components\Tabs\Tab::make('Chinese')
+                        ->schema([
+                            // Basic fields (Chinese)
+                            Forms\Components\TextInput::make('title_zh')->label('Title (Chinese)'),
+                            Forms\Components\Textarea::make('description_zh')->label('Description (Chinese)'),
+                            Forms\Components\TextInput::make('location_zh')->label('Location (Chinese)'),
+
+                            // Details (Chinese)
+                            Forms\Components\TextInput::make('duration_zh')->label('Duration (Chinese)'),
+                            Forms\Components\TextInput::make('group_size_zh')->label('Group Size (Chinese)'),
+                            Forms\Components\TextInput::make('badge_zh')->label('Badge (Chinese)'),
+                            Forms\Components\TagsInput::make('features_zh')->label('Features (Chinese)')->placeholder('Enter features'),
+                            Forms\Components\TagsInput::make('highlights_zh')->label('Highlights (Chinese)')->placeholder('Enter highlights'),
+                        ])->columnSpanFull(),
                 ])->columnSpanFull(),
 
             // Keep discount as a single (non-localized) field for now

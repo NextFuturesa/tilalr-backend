@@ -57,8 +57,9 @@ class TripResource extends Resource
                     TextInput::make('title')->hidden(),
                     TextInput::make('title_trans.en')->label(__('admin.form.title_en'))->required()->maxLength(255),
                     TextInput::make('title_trans.ar')->label(__('admin.form.title_ar'))->extraAttributes(['dir' => 'rtl']),
+                    TextInput::make('title_trans.zh')->label('Title (ZH)')->maxLength(255),
                     TextInput::make('slug')->label(__('admin.form.slug'))->unique(ignoreRecord: true)->maxLength(255),
-                    Select::make('lang')->label(__('admin.form.language'))->options(['en' => 'EN', 'ar' => 'AR'])->default('en')->required(),
+                    Select::make('lang')->label(__('admin.form.language'))->options(['en' => 'EN', 'ar' => 'AR', 'zh' => 'ZH'])->default('en')->required(),
                     Select::make('city_id')->label(__('admin.form.destination_choose'))->options(City::pluck('name', 'id'))->searchable()->placeholder(__('admin.placeholders.select_city')),
                     TextInput::make('city_name')->label(__('admin.form.destination_custom'))->helperText(__('admin.form.destination_custom_helper')),
                     TextInput::make('price')->label(__('admin.form.price'))->numeric()->prefix(__('admin.currency.sar')),
@@ -70,6 +71,7 @@ class TripResource extends Resource
                     Textarea::make('description')->label(__('admin.form.description'))->rows(3)->helperText('Legacy single-language field'),
                     Textarea::make('description_trans.en')->label(__('admin.form.description_en'))->rows(3),
                     Textarea::make('description_trans.ar')->label(__('admin.form.description_ar'))->rows(3)->extraAttributes(['dir' => 'rtl']),
+                    Textarea::make('description_trans.zh')->label('Description (ZH)')->rows(3),
                     Forms\Components\TagsInput::make('highlights')->label(__('admin.form.highlights'))->placeholder(__('admin.placeholders.add_highlight')),
                     TextInput::make('group_size')->label(__('admin.form.group_size')),
                     FileUpload::make('image')

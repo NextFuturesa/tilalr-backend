@@ -54,11 +54,20 @@ class InternationalDestinationResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name_en')->required()->label('Name (EN)'),
                         Forms\Components\TextInput::make('name_ar')->label('Name (AR)'),
-                        Forms\Components\TextInput::make('country_en')->required()->label('Country (EN)'),
+                        Forms\Components\TextInput::make('name_zh')->label('Name (ZH)'),
+                        Forms\Components\TextInput::make('country_en')->required()->label('Country (EN)')
+                            ->helperText('e.g., UAE, Turkey, Thailand'),
                         Forms\Components\TextInput::make('country_ar')->label('Country (AR)'),
+                        Forms\Components\TextInput::make('country_zh')->label('Country (ZH)'),
+                        Forms\Components\TextInput::make('city_en')->label('City (EN)')
+                            ->helperText('e.g., Dubai, Istanbul, Bangkok'),
+                        Forms\Components\TextInput::make('city_ar')->label('City (AR)'),
+                        Forms\Components\TextInput::make('city_zh')->label('City (ZH)'),
                         Forms\Components\Textarea::make('description_en')->label('Description (EN)'),
                         Forms\Components\Textarea::make('description_ar')->label('Description (AR)'),
+                        Forms\Components\Textarea::make('description_zh')->label('Description (ZH)'),
                         Forms\Components\FileUpload::make('image')->image()->directory('destinations')->label('Image'),
+                        Forms\Components\TextInput::make('price')->numeric()->prefix('SAR')->label('Price'),
                         Forms\Components\Toggle::make('active')->label('Active')->default(true),
                     ])->columns(2),
             ]);
@@ -69,14 +78,19 @@ class InternationalDestinationResource extends Resource
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('name_en')->label('Name (EN)')->searchable()->sortable(),
-                Tables\Columns\TextColumn::make('country_en')->label('Country (EN)')->searchable(),
+                Tables\Columns\TextColumn::make('country_en')->label('Country')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('city_en')->label('City')->searchable()->sortable(),
+                Tables\Columns\TextColumn::make('price')->label('Price')->money('SAR')->sortable(),
                 Tables\Columns\IconColumn::make('active')->boolean()->label('Active'),
             ])
             ->filters([
-                //
+                Tables\Filters\SelectFilter::make('country_en')
+                    ->label('Country')
+                    ->options(fn () => InternationalDestination::distinct()->pluck('country_en', 'country_en')->filter()->toArray()),
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
