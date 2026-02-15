@@ -52,13 +52,16 @@ class InternationalFlightController extends Controller
             $validated = $request->validate([
                 'airline_en' => 'required|string|max:255',
                 'airline_ar' => 'required|string|max:255',
+                'airline_zh' => 'nullable|string|max:255',
                 'route_en' => 'required|string|max:255',
                 'route_ar' => 'required|string|max:255',
+                'route_zh' => 'nullable|string|max:255',
                 'departure_time' => 'required|string',
                 'arrival_time' => 'required|string',
                 'duration' => 'required|string',
                 'stops_en' => 'required|string',
                 'stops_ar' => 'required|string',
+                'stops_zh' => 'nullable|string',
                 'price' => 'nullable|numeric|min:0',
                 'active' => 'boolean',
             ]);
@@ -86,13 +89,16 @@ class InternationalFlightController extends Controller
             $validated = $request->validate([
                 'airline_en' => 'string|max:255',
                 'airline_ar' => 'string|max:255',
+                'airline_zh' => 'nullable|string|max:255',
                 'route_en' => 'string|max:255',
                 'route_ar' => 'string|max:255',
+                'route_zh' => 'nullable|string|max:255',
                 'departure_time' => 'string',
                 'arrival_time' => 'string',
                 'duration' => 'string',
                 'stops_en' => 'string',
                 'stops_ar' => 'string',
+                'stops_zh' => 'nullable|string',
                 'price' => 'nullable|numeric|min:0',
                 'active' => 'boolean',
             ]);

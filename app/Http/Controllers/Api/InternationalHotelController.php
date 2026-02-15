@@ -95,6 +95,7 @@ class InternationalHotelController extends Controller
                 'image' => 'nullable|string',
                 'amenities_en' => 'nullable|array',
                 'amenities_ar' => 'nullable|array',
+                'amenities_zh' => 'nullable|array',
                 'active' => 'boolean',
             ]);
 
@@ -130,6 +131,7 @@ class InternationalHotelController extends Controller
                 'image' => 'nullable|string',
                 'amenities_en' => 'nullable|array',
                 'amenities_ar' => 'nullable|array',
+                'amenities_zh' => 'nullable|array',
                 'active' => 'boolean',
             ]);
 
