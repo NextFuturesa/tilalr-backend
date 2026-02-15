@@ -54,15 +54,8 @@ class InternationalDestinationResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name_en')->required()->label('Name (EN)'),
                         Forms\Components\TextInput::make('name_ar')->label('Name (AR)'),
-                        Forms\Components\TextInput::make('name_zh')->label('Name (ZH)'),
-                        Forms\Components\TextInput::make('country_en')->required()->label('Country (EN)')
-                            ->helperText('e.g., UAE, Turkey, Thailand'),
+                        Forms\Components\TextInput::make('country_en')->required()->label('Country (EN)'),
                         Forms\Components\TextInput::make('country_ar')->label('Country (AR)'),
-                        Forms\Components\TextInput::make('country_zh')->label('Country (ZH)'),
-                        Forms\Components\TextInput::make('city_en')->label('City (EN)')
-                            ->helperText('e.g., Dubai, Istanbul, Bangkok'),
-                        Forms\Components\TextInput::make('city_ar')->label('City (AR)'),
-                        Forms\Components\TextInput::make('city_zh')->label('City (ZH)'),
                         Forms\Components\Textarea::make('description_en')->label('Description (EN)'),
                         Forms\Components\Textarea::make('description_ar')->label('Description (AR)'),
                         Forms\Components\Textarea::make('description_zh')->label('Description (ZH)'),

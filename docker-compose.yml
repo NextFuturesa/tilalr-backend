@@ -87,7 +87,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD:-rootpassword}
       MYSQL_DATABASE: ${DB_DATABASE:-tilalr}
-      MYSQL_USER: ${DB_USERNAME:-tilalr_user}
       MYSQL_PASSWORD: ${DB_PASSWORD:-tilalr_password}
     ports:
       - "${DB_PORT:-3306}:3306"

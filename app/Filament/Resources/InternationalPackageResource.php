@@ -54,15 +54,6 @@ class InternationalPackageResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('title_en')->required()->label('Title (EN)'),
                         Forms\Components\TextInput::make('title_ar')->label('Title (AR)'),
-                        Forms\Components\TextInput::make('title_zh')->label('Title (ZH)'),
-                        Forms\Components\TextInput::make('country_en')->label('Country (EN)')
-                            ->helperText('e.g., UAE, Turkey, Thailand'),
-                        Forms\Components\TextInput::make('country_ar')->label('Country (AR)'),
-                        Forms\Components\TextInput::make('country_zh')->label('Country (ZH)'),
-                        Forms\Components\TextInput::make('city_en')->label('City (EN)')
-                            ->helperText('e.g., Dubai, Istanbul, Bangkok'),
-                        Forms\Components\TextInput::make('city_ar')->label('City (AR)'),
-                        Forms\Components\TextInput::make('city_zh')->label('City (ZH)'),
                         Forms\Components\TextInput::make('destination_en')->required()->label('Destination (EN)'),
                         Forms\Components\TextInput::make('destination_ar')->label('Destination (AR)'),
                         Forms\Components\TextInput::make('destination_zh')->label('Destination (ZH)'),
