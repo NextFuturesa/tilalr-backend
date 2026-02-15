@@ -31,4 +31,9 @@ class InternationalHotel extends Model
         'active' => 'boolean',
         'price' => 'decimal:2',
     ];
+
+    public function setImageAttribute($value)
+    {
+        $this->attributes['image'] = str_replace('storage/', '', $value);
+    }
 }
