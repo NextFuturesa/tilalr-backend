@@ -83,28 +83,48 @@ class IslandDestination extends Model
     {
         // Ensure a unique slug exists on creating/saving to prevent route generation errors
         static::creating(function ($model) {
-            if (empty($model->slug) && !empty($model->title_en)) {
-                $base = Str::slug($model->title_en);
-                $slug = $base;
-                $i = 1;
-                while (self::where('slug', $slug)->exists()) {
-                    $slug = $base . '-' . $i++;
-                }
-                $model->slug = $slug;
+            // Always generate a unique slug from title_en when creating
+            if (!empty($model->title_en)) {
+                $model->slug = self::generateUniqueSlug($model->title_en);
             }
         });
 
-        static::saving(function ($model) {
-            // If slug somehow emptied before save, regenerate from title_en
+        static::updating(function ($model) {
+            // If slug somehow emptied before update, regenerate from title_en
             if (empty($model->slug) && !empty($model->title_en)) {
-                $base = Str::slug($model->title_en);
-                $slug = $base;
-                $i = 1;
-                while (self::where('slug', $slug)->where('id', '!=', $model->id)->exists()) {
-                    $slug = $base . '-' . $i++;
-                }
-                $model->slug = $slug;
+                $model->slug = self::generateUniqueSlug($model->title_en, $model->id);
             }
         });
+    }
+
+    /**
+     * Generate a unique slug from the given title
+     */
+    public static function generateUniqueSlug(string $title, ?int $excludeId = null): string
+    {
+        $base = Str::slug($title);
+        
+        // If base is empty (e.g., Arabic-only title), use a fallback
+        if (empty($base)) {
+            $base = 'destination-' . time();
+        }
+        
+        $slug = $base;
+        $i = 1;
+        
+        $query = self::where('slug', $slug);
+        if ($excludeId) {
+            $query->where('id', '!=', $excludeId);
+        }
+        
+        while ($query->exists()) {
+            $slug = $base . '-' . $i++;
+            $query = self::where('slug', $slug);
+            if ($excludeId) {
+                $query->where('id', '!=', $excludeId);
+            }
+        }
+        
+        return $slug;
     }
 }

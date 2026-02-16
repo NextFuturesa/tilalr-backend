@@ -108,7 +108,7 @@ class InternationalIslandResource extends Resource
                         Forms\Components\FileUpload::make('image')
                             ->label('Island Image')
                             ->disk('public')
-                            ->directory('island-destinations'),
+                            ->directory('international'),
 
                         Forms\Components\Toggle::make('active')
                             ->label('Active')

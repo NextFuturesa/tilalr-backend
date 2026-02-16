@@ -9,6 +9,7 @@ class InternationalHotel extends Model
     protected $fillable = [
         'name_en',
         'name_ar',
+        'name_zh',
         'location_en',
         'location_ar',
         'location_zh',

@@ -54,6 +54,7 @@ class InternationalPackageResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('title_en')->required()->label('Title (EN)'),
                         Forms\Components\TextInput::make('title_ar')->label('Title (AR)'),
+                        Forms\Components\TextInput::make('title_zh')->label('Title (ZH)'),
                         Forms\Components\TextInput::make('destination_en')->required()->label('Destination (EN)'),
                         Forms\Components\TextInput::make('destination_ar')->label('Destination (AR)'),
                         Forms\Components\TextInput::make('destination_zh')->label('Destination (ZH)'),
@@ -64,7 +65,7 @@ class InternationalPackageResource extends Resource
                         Forms\Components\Textarea::make('description_en')->label('Description (EN)'),
                         Forms\Components\Textarea::make('description_ar')->label('Description (AR)'),
                         Forms\Components\Textarea::make('description_zh')->label('Description (ZH)'),
-                        Forms\Components\FileUpload::make('image')->image()->directory('packages')->label('Image'),
+                        Forms\Components\FileUpload::make('image')->image()->directory('packages')->disk('public')->preserveFilenames()->label('Image'),
                         Forms\Components\Toggle::make('active')->label('Active')->default(true),
                     ])->columns(2),
             ]);

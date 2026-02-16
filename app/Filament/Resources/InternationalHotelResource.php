@@ -54,6 +54,7 @@ class InternationalHotelResource extends Resource
                     ->schema([
                         Forms\Components\TextInput::make('name_en')->required()->label('Name (EN)'),
                         Forms\Components\TextInput::make('name_ar')->label('Name (AR)'),
+                        Forms\Components\TextInput::make('name_zh')->label('Name (ZH)'),
                         Forms\Components\TextInput::make('location_en')->required()->label('Location (EN)'),
                         Forms\Components\TextInput::make('location_ar')->label('Location (AR)'),
                         Forms\Components\TextInput::make('location_zh')->label('Location (ZH)'),
@@ -62,7 +63,7 @@ class InternationalHotelResource extends Resource
                         Forms\Components\Textarea::make('description_en')->label('Description (EN)'),
                         Forms\Components\Textarea::make('description_ar')->label('Description (AR)'),
                         Forms\Components\Textarea::make('description_zh')->label('Description (ZH)'),
-                        Forms\Components\FileUpload::make('image')->image()->directory('hotels')->disk('public')->label('Image'),
+                        Forms\Components\FileUpload::make('image')->image()->directory('hotels')->disk('public')->preserveFilenames()->label('Image'),
                         Forms\Components\Toggle::make('active')->label('Active')->default(true),
                     ])->columns(2),
             ]);
