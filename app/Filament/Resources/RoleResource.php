@@ -104,7 +104,6 @@ class RoleResource extends Resource
                     ->searchable()
                     ->sortable()
                     ->badge()
-                    ->formatStateUsing(fn (string $state) => __("roles.{$state}", ['default' => $state]))
                     ->color(fn (string $state): string => match ($state) {
                         'super_admin' => 'danger',
                         'executive_manager' => 'warning',
@@ -159,9 +158,7 @@ class RoleResource extends Resource
                     }),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                // Disabled to prevent checkbox display issues
             ])
             ->defaultSort('sort_order');
     }
