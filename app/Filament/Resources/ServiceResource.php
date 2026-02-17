@@ -50,6 +50,12 @@ class ServiceResource extends Resource
         return __('admin.resources.services');
     }
 
+    // Hide Services from the Filament sidebar for all users
+    public static function canAccess(): bool
+    {
+        return false;
+    }
+
     public static function form(\Filament\Forms\Form $form): \Filament\Forms\Form
     {
         return $form
