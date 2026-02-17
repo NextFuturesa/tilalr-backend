@@ -42,8 +42,8 @@ class TaqnyatSmsService
         }
         
         $http = Http::withHeaders($headers)
-            ->timeout(10)  // 10 second timeout to prevent hanging
-            ->connectTimeout(5);  // 5 second connection timeout
+            ->timeout(5)  // 5 second timeout for Taqnyat API
+            ->connectTimeout(3);  // 3 second connection timeout
         
         // Disable SSL verification in local development (XAMPP has SSL issues)
         if (app()->environment('local')) {
