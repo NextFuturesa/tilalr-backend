@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Models\OtpCode;
 use App\Models\User;
+use App\Jobs\SendOtpSmsJob;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
@@ -443,18 +444,13 @@ class OtpService
         $message = $messages[$type] ?? "Your verification code is: {$code}\nfor {$domain}";
 
         if ($this->mode === 'sms') {
-            // Full SMS mode - actually send via SMS provider
+            // Queue SMS sending in background to avoid blocking HTTP responses
             try {
-                $result = $this->smsService->send($phone, $message);
-                if ($result) {
-                    return true;
-                }
-
-                // Provider indicated failure
-                Log::error('SMS provider reported failure', ['phone' => $phone, 'type' => $type]);
-                return false;
+                SendOtpSmsJob::dispatch($phone, $message);
+                Log::info('OTP SMS queued for delivery', ['phone' => $phone, 'type' => $type]);
+                return true;
             } catch (\Throwable $e) {
-                Log::error('SMS provider exception', ['error' => $e->getMessage(), 'phone' => $phone]);
+                Log::error('Failed to queue OTP SMS', ['error' => $e->getMessage(), 'phone' => $phone]);
                 return false;
             }
         } else {

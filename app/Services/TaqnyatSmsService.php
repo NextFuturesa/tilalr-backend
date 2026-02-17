@@ -41,7 +41,9 @@ class TaqnyatSmsService
             $headers['Content-Type'] = 'application/json';
         }
         
-        $http = Http::withHeaders($headers);
+        $http = Http::withHeaders($headers)
+            ->timeout(10)  // 10 second timeout to prevent hanging
+            ->connectTimeout(5);  // 5 second connection timeout
         
         // Disable SSL verification in local development (XAMPP has SSL issues)
         if (app()->environment('local')) {
