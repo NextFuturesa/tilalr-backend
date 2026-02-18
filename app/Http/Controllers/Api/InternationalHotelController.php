@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\InternationalHotel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class InternationalHotelController extends Controller
 {
@@ -15,22 +16,27 @@ class InternationalHotelController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get()
                 ->map(function ($h) {
-                    $image = $h->image ? ltrim($h->image, '/') : null;
-                    if ($image) {
-                        if (preg_match('/^https?:\/\//', $image)) {
-                            $h->image = $image;
-                        } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'hotels/') || str_starts_with($image, 'islands/')) {
-                            // Serve directly from public folder
-                            $h->image = asset($image) . '?v=' . strtotime($h->updated_at);
-                        } elseif (str_starts_with($image, 'storage/') || str_starts_with($image, '/storage/')) {
-                            $h->image = asset($image) . '?v=' . strtotime($h->updated_at);
-                        } else {
-                            $h->image = asset($image) . '?v=' . strtotime($h->updated_at);
-                        }
+                    // normalize stored image values and always serve via the storage symlink
+                    $raw = $h->getAttributes()['image'] ?? null;
+                    $image = $raw ? preg_replace('#^/+|^storage/#', '', $raw) : null;
+
+                    if ($image && preg_match('/^https?:\/\//', $image)) {
+                        // if DB somehow contains a full URL, treat as external & return as-is
+                        $url = $image;
+                    } elseif ($image) {
+                        $path = preg_replace('#^/+|^storage/#', '', $image);
+                        $url = asset('storage/' . $path) . '?v=' . strtotime($h->updated_at);
                     } else {
-                        $h->image = null;
+                        $url = null;
                     }
-                    return $h;
+
+                    // return a plain array (avoid model mutator side-effects on assignment)
+                    $hArr = $h->toArray();
+                    $hArr['image'] = $url;
+
+                    Log::debug('hotel.image resolved', ['id' => $h->id, 'resolved' => $url, 'raw' => $raw]);
+
+                    return $hArr;
                 });
 
             return response()->json([
@@ -51,25 +57,25 @@ class InternationalHotelController extends Controller
         try {
             $hotel = InternationalHotel::findOrFail($id);
 
-            $image = $hotel->image ? ltrim($hotel->image, '/') : null;
-            if ($image) {
-                if (preg_match('/^https?:\/\//', $image)) {
-                    $hotel->image = $image;
-                } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'hotels/') || str_starts_with($image, 'islands/')) {
-                    // Serve directly from public folder
-                    $hotel->image = asset($image) . '?v=' . strtotime($hotel->updated_at);
-                } elseif (str_starts_with($image, 'storage/') || str_starts_with($image, '/storage/')) {
-                    $hotel->image = asset($image) . '?v=' . strtotime($hotel->updated_at);
-                } else {
-                    $hotel->image = asset($image) . '?v=' . strtotime($hotel->updated_at);
-                }
+            // normalize stored image values and always serve via the storage symlink
+            $raw = $hotel->getAttributes()['image'] ?? null;
+            $image = $raw ? preg_replace('#^/+|^storage/#', '', $raw) : null;
+
+            if ($image && preg_match('/^https?:\/\//', $image)) {
+                $url = $image;
+            } elseif ($image) {
+                $path = preg_replace('#^/+|^storage/#', '', $image);
+                $url = asset('storage/' . $path) . '?v=' . strtotime($hotel->updated_at);
             } else {
-                $hotel->image = null;
+                $url = null;
             }
+
+            $hotelArr = $hotel->toArray();
+            $hotelArr['image'] = $url;
 
             return response()->json([
                 'success' => true,
-                'data' => $hotel,
+                'data' => $hotelArr,
                 'message' => 'Hotel retrieved successfully'
             ], 200);
         } catch (\Exception $e) {

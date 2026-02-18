@@ -20,8 +20,8 @@ class InternationalDestinationController extends Controller
                         if (preg_match('/^https?:\/\//', $image)) {
                             $d->image = $image;
                         } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'destinations/') || str_starts_with($image, 'islands/')) {
-                            // Serve directly from public folder
-                            $d->image = asset($image) . '?v=' . strtotime($d->updated_at);
+                            // Stored under storage/app/public — serve via the storage symlink
+                            $d->image = asset('storage/' . $image) . '?v=' . strtotime($d->updated_at);
                         } elseif (str_starts_with($image, 'storage/') || str_starts_with($image, '/storage/')) {
                             $d->image = asset($image) . '?v=' . strtotime($d->updated_at);
                         } else {
@@ -56,8 +56,8 @@ class InternationalDestinationController extends Controller
                 if (preg_match('/^https?:\/\//', $image)) {
                     $destination->image = $image;
                 } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'destinations/') || str_starts_with($image, 'islands/')) {
-                    // Serve directly from public folder
-                    $destination->image = asset($image) . '?v=' . strtotime($destination->updated_at);
+                    // Stored under storage/app/public — serve via the storage symlink
+                    $destination->image = asset('storage/' . $image) . '?v=' . strtotime($destination->updated_at);
                 } elseif (str_starts_with($image, 'storage/') || str_starts_with($image, '/storage/')) {
                     $destination->image = asset($image) . '?v=' . strtotime($destination->updated_at);
                 } else {
@@ -255,7 +255,11 @@ class InternationalDestinationController extends Controller
                 ->map(function ($d) {
                     $image = $d->image ? ltrim($d->image, '/') : null;
                     if ($image && !preg_match('/^https?:\/\//', $image)) {
-                        $d->image = asset($image) . '?v=' . strtotime($d->updated_at);
+                        if (str_starts_with($image, 'international/') || str_starts_with($image, 'destinations/') || str_starts_with($image, 'islands/')) {
+                            $d->image = asset('storage/' . $image) . '?v=' . strtotime($d->updated_at);
+                        } else {
+                            $d->image = asset($image) . '?v=' . strtotime($d->updated_at);
+                        }
                     }
                     return $d;
                 });
