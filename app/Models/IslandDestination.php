@@ -87,6 +87,11 @@ class IslandDestination extends Model
             if (!empty($model->title_en)) {
                 $model->slug = self::generateUniqueSlug($model->title_en);
             }
+
+            // Ensure rating is set to a sensible default when not provided by the form/API
+            if (!isset($model->rating) || $model->rating === null) {
+                $model->rating = 4.5;
+            }
         });
 
         static::updating(function ($model) {
