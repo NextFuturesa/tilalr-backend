@@ -31,7 +31,7 @@ class NDCFlightController extends Controller
             'searchCriteria' => 'required|array|min:1',
             'searchCriteria.*.origin' => 'required|string|size:3',
             'searchCriteria.*.destination' => 'required|string|size:3',
-            'searchCriteria.*.departureDate' => 'required|date|after:today',
+            'searchCriteria.*.departureDate' => 'required|date|after_or_equal:today',
             'passengers' => 'required|array|min:1',
             'passengers.*.passengerTypeCode' => 'required|in:ADT,CHD,INF',
             'passengers.*.numberOfPassengers' => 'required|integer|min:1',

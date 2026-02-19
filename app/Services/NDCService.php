@@ -29,7 +29,7 @@ class NDCService
 
         // Validate configuration
         if (empty($this->apiKey)) {
-            throw new Exception('NDC API key is not configured. Please set NDC_API_KEY in your .env file.');
+            throw new Exception('NDC API key is not configured. Flight booking operations will not be available. Please set NDC_API_KEY in your .env file.');
         }
     }
 
