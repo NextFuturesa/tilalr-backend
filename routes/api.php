@@ -21,6 +21,7 @@ use App\Http\Controllers\Api\HealthController;
 use App\Http\Controllers\Api\TestDataController;
 use App\Http\Controllers\Api\IslandDestinationController;
 use App\Http\Controllers\Api\CustomPaymentOfferController;
+use App\Http\Controllers\Api\NDCFlightController;
 
 // Health check routes
 Route::get('/health', [HealthController::class, 'check']);
@@ -238,4 +239,29 @@ Route::post('/custom-payment-offers/{uniqueLink}/payment-failed', [CustomPayment
 
 // Moyasar Webhook for custom payment offers
 Route::post('/webhooks/moyasar/custom-payment', [CustomPaymentOfferController::class, 'moyasarWebhook']);
+
+// ============================================
+// NDC WONDER TRAVEL API INTEGRATION
+// ============================================
+// Real-time flight booking via NDC Portal APIs
+Route::prefix('ndc')->group(function () {
+    // Test & Health Check
+    Route::get('/test-connection', [NDCFlightController::class, 'testConnection']);
+    
+    // Flight Search & Booking Flow
+    Route::post('/search-flights', [NDCFlightController::class, 'searchFlights']);
+    Route::post('/confirm-fare', [NDCFlightController::class, 'confirmFare']);
+    Route::post('/get-bundles', [NDCFlightController::class, 'getAvailableBundles']);
+    Route::post('/add-passengers', [NDCFlightController::class, 'addPassengerDetails']);
+    Route::post('/book', [NDCFlightController::class, 'bookFlight']);
+    Route::post('/hold', [NDCFlightController::class, 'holdBooking']);
+    Route::post('/book-after-hold', [NDCFlightController::class, 'bookAfterHold']);
+    Route::post('/reconfirm-fare', [NDCFlightController::class, 'fareConfirmAfterHold']);
+    
+    // Booking Management
+    Route::get('/bookings/{reference}', [NDCFlightController::class, 'retrieveBooking']);
+    
+    // Agency Management
+    Route::get('/agency/balance', [NDCFlightController::class, 'getAgencyBalance']);
+});
 
