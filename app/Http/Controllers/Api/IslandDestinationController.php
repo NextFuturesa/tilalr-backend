@@ -25,6 +25,11 @@ class IslandDestinationController extends Controller
             $query = IslandDestination::where('active', true)->with('city');
             if ($type) $query->where('type', $type);
 
+            // Disable caching for image data
+            header('Cache-Control: no-cache, no-store, must-revalidate');
+            header('Pragma: no-cache');
+            header('Expires: 0');
+
             $destinations = $query->get()->map(function ($d) {
                 // Normalize stored image path to a full URL for the frontend
                 $imagePath = $d->image ? ltrim($d->image, '/') : null;
@@ -33,9 +38,9 @@ class IslandDestinationController extends Controller
                     if (preg_match('/^https?:\/\//', $imagePath)) {
                         $d->image = $imagePath;
                     }
-                    // Check if it's islands/ or international/ path (stored directly in public/)
+                    // Check if it's islands/ or international/ path (stored in storage/app/public/)
                     elseif (str_starts_with($imagePath, 'islands/') || str_starts_with($imagePath, 'international/')) {
-                        $d->image = asset($imagePath);
+                        $d->image = asset('storage/' . $imagePath);
                     }
                     // Check if it's already a full storage path
                     elseif (str_starts_with($imagePath, 'storage/') || str_starts_with($imagePath, '/storage/')) {
@@ -77,6 +82,11 @@ class IslandDestinationController extends Controller
     public function show($id)
     {
         try {
+            // Disable caching for image data
+            header('Cache-Control: no-cache, no-store, must-revalidate');
+            header('Pragma: no-cache');
+            header('Expires: 0');
+
             // Try to find by slug first (if it's not a numeric ID)
             $destination = null;
             
@@ -101,12 +111,12 @@ class IslandDestinationController extends Controller
             $imagePath = $destination->image ? ltrim($destination->image, '/') : null;
             if ($imagePath) {
                 // Check if already absolute URL
-                if (preg_match('/^https?:\/\//', $imagePath)) {
+                if (preg_match('/^https?:\/\/', $imagePath)) {
                     $destination->image = $imagePath;
                 }
-                // Check if it's islands/ or international/ path (stored directly in public/)
+                // Check if it's islands/ or international/ path (stored in storage/app/public/)
                 elseif (str_starts_with($imagePath, 'islands/') || str_starts_with($imagePath, 'international/')) {
-                    $destination->image = asset($imagePath);
+                    $destination->image = asset('storage/' . $imagePath);
                 }
                 // Check if it's already a full storage path
                 elseif (str_starts_with($imagePath, 'storage/') || str_starts_with($imagePath, '/storage/')) {

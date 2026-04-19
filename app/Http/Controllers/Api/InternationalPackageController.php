@@ -8,6 +8,38 @@ use Illuminate\Http\Request;
 
 class InternationalPackageController extends Controller
 {
+    private function resolvePackageImageUrl(?string $imagePath, $updatedAt): ?string
+    {
+        $image = $imagePath ? ltrim($imagePath, '/') : null;
+        if (!$image) {
+            return null;
+        }
+
+        if (preg_match('/^https?:\/\//', $image)) {
+            return $image;
+        }
+
+        if (str_starts_with($image, 'international/')) {
+            return asset($image) . '?v=' . strtotime($updatedAt);
+        }
+
+        if (str_starts_with($image, 'packages/') || str_starts_with($image, 'islands/')) {
+            // Stored under storage/app/public — serve via the storage symlink
+            return asset('storage/' . $image) . '?v=' . strtotime($updatedAt);
+        }
+
+        if (str_starts_with($image, 'storage/')) {
+            return asset($image) . '?v=' . strtotime($updatedAt);
+        }
+
+        // Legacy seed data stores only file names (e.g. 1.webp).
+        if (!str_contains($image, '/')) {
+            return asset('international/' . $image) . '?v=' . strtotime($updatedAt);
+        }
+
+        return asset($image) . '?v=' . strtotime($updatedAt);
+    }
+
     public function index()
     {
         try {
@@ -15,21 +47,7 @@ class InternationalPackageController extends Controller
                 ->orderBy('created_at', 'desc')
                 ->get()
                 ->map(function ($p) {
-                    $image = $p->image ? ltrim($p->image, '/') : null;
-                    if ($image) {
-                        if (preg_match('/^https?:\/\//', $image)) {
-                            $p->image = $image;
-                        } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'packages/') || str_starts_with($image, 'islands/')) {
-                            // Serve directly from public folder
-                            $p->image = asset($image) . '?v=' . strtotime($p->updated_at);
-                        } elseif (str_starts_with($image, 'storage/') || str_starts_with($image, '/storage/')) {
-                            $p->image = asset($image) . '?v=' . strtotime($p->updated_at);
-                        } else {
-                            $p->image = asset($image) . '?v=' . strtotime($p->updated_at);
-                        }
-                    } else {
-                        $p->image = null;
-                    }
+                    $p->image = $this->resolvePackageImageUrl($p->image, $p->updated_at);
                     return $p;
                 });
 
@@ -50,22 +68,7 @@ class InternationalPackageController extends Controller
     {
         try {
             $package = InternationalPackage::findOrFail($id);
-
-            $image = $package->image ? ltrim($package->image, '/') : null;
-            if ($image) {
-                if (preg_match('/^https?:\/\//', $image)) {
-                    $package->image = $image;
-                } elseif (str_starts_with($image, 'international/') || str_starts_with($image, 'packages/') || str_starts_with($image, 'islands/')) {
-                    // Serve directly from public folder
-                    $package->image = asset($image) . '?v=' . strtotime($package->updated_at);
-                } elseif (str_starts_with($image, 'storage/') || str_starts_with($image, '/storage/')) {
-                    $package->image = asset($image) . '?v=' . strtotime($package->updated_at);
-                } else {
-                    $package->image = asset($image) . '?v=' . strtotime($package->updated_at);
-                }
-            } else {
-                $package->image = null;
-            }
+            $package->image = $this->resolvePackageImageUrl($package->image, $package->updated_at);
 
             return response()->json([
                 'success' => true,

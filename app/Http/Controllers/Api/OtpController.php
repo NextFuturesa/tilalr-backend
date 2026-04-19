@@ -86,7 +86,7 @@ class OtpController extends Controller
         $request->validate([
             'phone' => 'required|string',
             'code' => 'required|string',
-            'type' => 'nullable|in:login,register',
+            'type' => 'nullable|in:login,register,reset',
         ]);
 
         $phone = $request->phone;

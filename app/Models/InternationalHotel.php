@@ -9,6 +9,7 @@ class InternationalHotel extends Model
     protected $fillable = [
         'name_en',
         'name_ar',
+        'name_zh',
         'location_en',
         'location_ar',
         'location_zh',
@@ -34,6 +35,21 @@ class InternationalHotel extends Model
 
     public function setImageAttribute($value)
     {
-        $this->attributes['image'] = str_replace('storage/', '', $value);
+        if (empty($value)) {
+            $this->attributes['image'] = null;
+            return;
+        }
+
+        // If a full URL was provided, extract the path part and normalize it
+        if (preg_match('/^https?:\/\//', $value)) {
+            $path = parse_url($value, PHP_URL_PATH) ?: $value;
+            $path = ltrim($path, '/');
+            $path = preg_replace('#^storage/#', '', $path);
+            $this->attributes['image'] = $path;
+            return;
+        }
+
+        // Normalize any leading slashes or storage/ prefix and store a relative path
+        $this->attributes['image'] = preg_replace('#^/+storage/#', '', ltrim($value, '/'));
     }
 }

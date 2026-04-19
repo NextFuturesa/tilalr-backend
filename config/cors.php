@@ -25,11 +25,9 @@ return [
     'http://localhost:3001',
     'http://127.0.0.1:3000',
     'http://127.0.0.1:3001',
-    // 'https://tilalr.com',
-    // 'https://www.tilalr.com',
-    // 'https://admin.tilalr.com',
-    'https://frontend.tilalr.com',
-    'https://test.tilalr.com',
+    'https://tilalr.com',
+    'https://www.tilalr.com',
+    'https://admin.tilalr.com',  // Add this if API is called from admin
 ],
 
     'allowed_origins_patterns' => [],

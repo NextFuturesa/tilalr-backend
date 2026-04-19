@@ -52,8 +52,12 @@ class InternationalPackageResource extends Resource
             ->schema([
                 Forms\Components\Section::make('Package Details')
                     ->schema([
+                        Forms\Components\TextInput::make('type_en')->required()->label('Type (EN)'),
+                        Forms\Components\TextInput::make('type_ar')->required()->label('Type (AR)'),
+                        Forms\Components\TextInput::make('type_zh')->label('Type (ZH)'),
                         Forms\Components\TextInput::make('title_en')->required()->label('Title (EN)'),
-                        Forms\Components\TextInput::make('title_ar')->label('Title (AR)'),
+                        Forms\Components\TextInput::make('title_ar')->required()->label('Title (AR)'),
+                        Forms\Components\TextInput::make('title_zh')->label('Title (ZH)'),
                         Forms\Components\TextInput::make('destination_en')->required()->label('Destination (EN)'),
                         Forms\Components\TextInput::make('destination_ar')->label('Destination (AR)'),
                         Forms\Components\TextInput::make('destination_zh')->label('Destination (ZH)'),
@@ -61,10 +65,10 @@ class InternationalPackageResource extends Resource
                         Forms\Components\TextInput::make('duration_ar')->label('Duration (AR)'),
                         Forms\Components\TextInput::make('duration_zh')->label('Duration (ZH)'),
                         Forms\Components\TextInput::make('price')->required()->numeric()->label('Price'),
-                        Forms\Components\Textarea::make('description_en')->label('Description (EN)'),
-                        Forms\Components\Textarea::make('description_ar')->label('Description (AR)'),
+                        Forms\Components\Textarea::make('description_en')->required()->label('Description (EN)'),
+                        Forms\Components\Textarea::make('description_ar')->required()->label('Description (AR)'),
                         Forms\Components\Textarea::make('description_zh')->label('Description (ZH)'),
-                        Forms\Components\FileUpload::make('image')->image()->directory('packages')->label('Image'),
+                        Forms\Components\FileUpload::make('image')->image()->directory('packages')->disk('public')->preserveFilenames()->label('Image'),
                         Forms\Components\Toggle::make('active')->label('Active')->default(true),
                     ])->columns(2),
             ]);
