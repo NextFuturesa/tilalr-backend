@@ -100,6 +100,8 @@ class InternationalIslandResource extends Resource
 
                         Forms\Components\TextInput::make('rating')
                             ->label('Rating')
+                            ->required()
+                            ->default(4.5)
                             ->numeric()
                             ->minValue(0)
                             ->maxValue(5)

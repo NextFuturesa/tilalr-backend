@@ -130,6 +130,12 @@ class OtpController extends Controller
         // Verify the code itself (do not require a user match at this stage)
         $result = $this->otpService->verifyCode($phone, $code, 'reset');
 
+        Log::info('Password reset - OTP verification attempt', [
+            'phone' => $phone,
+            'success' => $result['success'],
+            'message' => $result['message'] ?? null
+        ]);
+
         if (!$result['success']) {
             return response()->json($result, 400);
         }
@@ -150,7 +156,7 @@ class OtpController extends Controller
         $user->password = Hash::make($password);
         $user->save();
 
-        Log::info('Password reset successful for user', ['user_id' => $user->id]);
+        Log::info('Password reset successful for user', ['user_id' => $user->id, 'phone' => $phone]);
 
         return response()->json(['success' => true, 'message' => 'Password reset successfully.']);
     }

@@ -178,6 +178,8 @@ class IslandDestinationResource extends Resource
                             ->numeric()
                             ->label('Price (USD)'),
                         Forms\Components\TextInput::make('rating')
+                            ->required()
+                            ->default(4.5)
                             ->numeric()
                             ->step(0.1)
                             ->minValue(0)
